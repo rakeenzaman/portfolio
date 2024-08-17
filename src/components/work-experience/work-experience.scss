@@ -1,0 +1,95 @@
+@import "../../global.scss";
+
+.header {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 56px;
+    user-select: none;
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    .experience-card {
+        border: 3px solid #43d072;
+        box-shadow: 0 0 7px #43d072;
+        max-width: 800px;
+        background-color: $off-white;
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        padding: 20px;
+        border-radius: 10px;
+    
+        .card-header {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            border-bottom: 1px solid #c9bfd1;
+            padding-bottom: 20px;
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                .text {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                    text-align: right;
+            
+                    .title {
+                        color: $obsidian;
+                        font-size: 24px;
+                        font-weight: 500;
+                    }
+                    .subtitle {
+                        color: $obsidian;
+                        font-size: 16px;
+                    }
+                }
+                .icon {
+                    height: 36px;
+                    width: 36px;
+                }
+            }
+    
+            .header-left {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+        
+                .title {
+                    color: $obsidian;
+                    font-size: 24px;
+                    font-weight: 500;
+                }
+                .subtitle {
+                    color: $obsidian;
+                    font-size: 16px;
+                }
+            }
+        }
+    
+        .desc {
+            margin-top: 20px;
+            color: $obsidian;
+            font-size: 16px;
+        }
+    }
+
+    .hidden {
+        opacity: 0;
+        filter: blur(10px);
+        transform: translateX(200px);
+    }
+    
+    .show {
+        transition: all 1s ease;
+        transition-delay: 0.1s;
+        opacity: 1;
+        filter: blur(0);
+        transform: translateX(0);
+    }
+}

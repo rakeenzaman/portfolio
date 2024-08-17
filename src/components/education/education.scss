@@ -1,0 +1,75 @@
+@import "../../global.scss";
+
+.container {
+    margin-bottom: 100px;
+    user-select: none;
+
+    .education-header { 
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 56px;
+    }
+
+    .degrees {
+        display: flex;
+        flex-direction: row;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+    
+        @media (max-width: 700px) {
+            flex-direction: column;
+        }
+        
+        .education-container {
+            background-color: $off-white;
+            max-width: 250px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            padding: 35px;
+            text-align: center;
+            font-weight: 500;
+            color: $obsidian;
+
+            .edu-title {
+                font-size: 32px;
+                margin-bottom: 5px;
+                margin-top: 10px;
+            }
+            
+            .edu-subtitle {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+            
+            .edu-sub-subtitle {
+                font-size: 16px;
+            }
+        }
+        
+        .icon-container {
+            margin: auto;
+            display: flex;
+            width: 70px;
+            height: 70px;
+            justify-content: center;
+            border-radius: 100%;
+
+            .grad-cap-icon {
+                width: 50px;
+            }
+        }
+        
+        .icon-1 {
+            background-color: $gentle-red;
+        }
+        
+        .icon-2 {
+            background-color: $gentle-blue;
+        }
+        
+    }
+    
+}
