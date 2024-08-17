@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/portfolio/static/css/main.a7b16baf.css",
+    "main.js": "/portfolio/static/js/main.3f8e08fe.js",
+    "static/js/453.1407b060.chunk.js": "/portfolio/static/js/453.1407b060.chunk.js",
+    "static/media/react.svg": "/portfolio/static/media/react.4e0c97009b885bfa75c5412262a46f5f.svg",
+    "static/media/github.svg": "/portfolio/static/media/github.21a96531cf94a63f610b6766b6c7220e.svg",
+    "static/media/java.svg": "/portfolio/static/media/java.a751bad6c81431ab4dd6fa6632a65540.svg",
+    "static/media/email.svg": "/portfolio/static/media/email.7386707b361b99371f5ac94b44e3597a.svg",
+    "static/media/javascript.svg": "/portfolio/static/media/javascript.4c1b5332c1b1057928f6f06cf972c91c.svg",
+    "static/media/cplusplus.svg": "/portfolio/static/media/cplusplus.617c9a8bb301f69b558a86e12a325806.svg",
+    "static/media/grad_cap.svg": "/portfolio/static/media/grad_cap.06db60618f2eedcfd02f33ab9d3c6bf2.svg",
+    "static/media/angular.svg": "/portfolio/static/media/angular.1db63aacc3ee9d0a610302ec72ed0c7a.svg",
+    "static/media/css3.svg": "/portfolio/static/media/css3.39769a8bd378bf410d6b381a8d88fa35.svg",
+    "index.html": "/portfolio/index.html",
+    "static/media/html.svg": "/portfolio/static/media/html.8664168d5bc90b1a24396f85aadbf623.svg",
+    "static/media/work.svg": "/portfolio/static/media/work.86c2552d63f04062499b4025527611a5.svg",
+    "static/media/check.svg": "/portfolio/static/media/check.76f0ac68d8a0e49a6f8ad1a03114c395.svg",
+    "main.a7b16baf.css.map": "/portfolio/static/css/main.a7b16baf.css.map",
+    "main.3f8e08fe.js.map": "/portfolio/static/js/main.3f8e08fe.js.map",
+    "453.1407b060.chunk.js.map": "/portfolio/static/js/453.1407b060.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a7b16baf.css",
+    "static/js/main.3f8e08fe.js"
+  ]
+}
