@@ -8,6 +8,10 @@
         text-align: center;
         margin-bottom: 50px;
         font-size: 56px;
+
+        @media (max-width: 800px) {
+            font-size: 46px;
+         }
     }
 
     .degrees {

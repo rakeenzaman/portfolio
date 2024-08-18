@@ -1,0 +1,109 @@
+@import "../../global.scss";
+
+.header {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 56px;
+    user-select: none;
+
+    @media (max-width: 800px) {
+        font-size: 46px;
+     }
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    margin: 0 20px;
+    .project-card {
+        margin: 0 20px;
+        border: 3px solid $off-white;
+        box-shadow: 0 0 5px $pretty-pink;
+        max-width: 820px;
+        background-color: $obsidian;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        padding: 22px;
+        border-radius: 14px;
+        width: 100%;
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            @media (max-width: 800px) {
+                flex-direction: column;
+                align-items: start;
+                gap: 10px;
+             }
+            .title {
+                font-size: 30px;
+                font-weight: 500;
+            }
+            .langs {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                .lang {
+                    font-size: 18px;
+                    font-weight: 500;
+                    background-color: $off-white;
+                    color: $obsidian;
+                    padding: 10px;
+                    border-radius: 10px;
+
+                }
+            }
+        }
+
+        .desc {
+            font-size: 18px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+
+            .button {
+                font-size: 22px;
+                font-weight: 500;
+                border: 2px solid $pretty-pink;
+                color: $pretty-pink;
+                padding: 10px 20px;
+                border-radius: 12px;
+                transition: all 0.15s ease-in-out;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: $pretty-pink;
+                    color: $obsidian;
+                    transition: all 0.15s ease-in-out;
+                }
+            }
+        }
+    }
+
+    .hidden {
+        opacity: 0;
+        filter: blur(10px);
+        transform: translateX(200px);
+    }
+
+    .hidden-reverse {
+        opacity: 0;
+        filter: blur(10px);
+        transform: translateX(-200px);
+    }
+    
+    .show {
+        transition: all 1s ease;
+        transition-delay: 0.1s;
+        opacity: 1;
+        filter: blur(0);
+        transform: translateX(0);
+    }
+}

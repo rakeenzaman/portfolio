@@ -11,6 +11,10 @@
     margin-bottom: 50px;
     font-size: 56px;
     user-select: none;
+
+    @media (max-width: 800px) {
+        font-size: 46px;
+     }
 }
 .experience {
 

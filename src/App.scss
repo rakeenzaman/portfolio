@@ -19,8 +19,10 @@ body {
 }
 
 .main-content {
+  max-width: 100vw;
+  overflow-x: hidden;
   margin-top: 100px;
-  margin-bottom: 800px ;
+  margin-bottom: 100px ;
 }
 
 .hideNavbar {

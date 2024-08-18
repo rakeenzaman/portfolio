@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import Experience from './components/experience/experience';
 import Education from './components/education/education';
 import WorkExperience from './components/work-experience/work-experience';
+import Projects from './components/projects/projects';
 import github from "./assets/github.svg";
 import email from "./assets/email.svg";
 import gsap from "gsap";
@@ -45,7 +46,7 @@ function App() {
       <div id="hi">Hi, I'm Rakeen</div>
       <div className="about-me-container">
         <div className="about-me about-me-desc">
-          I'm a software developer with a year of professional experience developing in Angular. I have a Bachelor's in Software Engineering and a Master's in Computer Science from Mississippi State University. Thanks for checking out my portfolio!
+          I'm a software developer with 1+ years of professional experience developing in Angular. I have a Bachelor's in Software Engineering and a Master's in Computer Science from Mississippi State University. Thanks for checking out my portfolio!
         </div>
       </div>
       <div className="header-links" ref={headerRef}>
@@ -62,6 +63,10 @@ function App() {
         <Education />
         <WorkExperience />
         <Experience />
+        <Projects />
+        <div className="about-me about-me-desc">
+          More projects coming soon. Thanks for stopping by!
+        </div>
       </div>
     </div>
   );
