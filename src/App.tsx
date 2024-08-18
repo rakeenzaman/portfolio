@@ -60,8 +60,8 @@ function App() {
       </div>
       <div className="main-content">
         <Education />
-        <Experience />
         <WorkExperience />
+        <Experience />
       </div>
     </div>
   );

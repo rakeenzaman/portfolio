@@ -1,5 +1,11 @@
 @import "../../global.scss";
 
+.container {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 100px;
+}
+
 .exp-header {
     text-align: center;
     margin-bottom: 50px;
@@ -7,17 +13,20 @@
     user-select: none;
 }
 .experience {
+
+    &:nth-child(2) {
+        margin-bottom: 30px;
+    }
+
+    &:nth-child(3) {
+        margin-bottom: 30px;
+    }
+
     margin: auto;
-    margin-bottom: 100px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    max-width: 900px;
-
-    @media (max-width: 800px) {
-        flex-direction: column;
-        align-items: center;
-    }
+    gap: 20px;
+    justify-content: center;
 
     user-select: none;
 
@@ -35,12 +44,19 @@
             object-fit: contain;
             transition: 0.2s ease-in-out;
         }
+
+        @media (max-width: 800px) {
+           padding: 14px;
+        }
     }
     
     .lang-label {
-        
         text-align: center;
         font-weight: 500;
+
+        @media (max-width: 800px) {
+            font-size: 13px;
+        }
     }
     
     .lang-container:nth-child(2) {
