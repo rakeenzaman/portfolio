@@ -1,0 +1,183 @@
+.exp-wrapper {
+    position: relative;
+    width: fit-content;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 50px;
+    font-family: 'Geist', sans-serif, 'Arial';
+    &:hover {
+        .box-background {
+            transition: all 0.3s ease-in-out;
+            opacity: 1;
+            filter: blur(20px);
+        }
+    }
+    .exp {
+        position: relative;
+        margin: auto;
+        width: 900px;
+        outline: 3px solid rgba(230, 230, 230, 1);
+        padding: 36px;
+        border-radius: 32px;
+        transition: border 0.5s ease-in-out, z-index 0s 0.5s;
+        z-index: 2;
+        background-color: rgb(255 255 255 / 0.7);
+        opacity: 1;
+        transition: all 0.3s ease-in-out, z-index 0s 0.2s;
+
+        &:hover {
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            transition: border 0.5s ease-in-out;
+            outline: 3px solid rgba(230, 230, 230, 0.3);
+            z-index: 4;
+
+            .current-indicator {
+                transition: all 0.2s ease-in-out;
+                opacity: 0;
+            }
+        }
+
+        .hover-to-expand {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            animation: upAndDown 3s infinite ease;
+            color: #bbbbbb;
+
+            svg {
+                width: 16px;
+            }
+        }
+
+        @keyframes upAndDown {
+            0% {
+                transform: translateY(5px);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+            100% {
+                transform: translateY(5px);
+            }
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 10px;
+
+            .big-text {
+                font-size: 32px;
+                font-weight: 500;
+            }
+            .small-text {
+                font-size: 22px;
+                font-weight: 400;
+            }
+        
+            .right {
+                text-align: right;
+            }
+            
+        }
+
+        .description {
+            padding: 18px;
+            border-radius: 20px;
+            background-color: rgb(255 255 255 / 0.5);
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 32px;
+        }
+
+        .current-indicator {
+            transition: all 1s ease-in-out;
+
+            .front, .back {
+                position: absolute;
+                right: 36px;
+                bottom: 36px;
+                width: 18px;
+                height: 18px;
+                border-radius: 100%;
+                background: rgb(34 197 94);
+            }
+
+            .front {
+                z-index: 1;
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    opacity: 0.7;
+                }
+                50% {
+                    transform: scale(1.5);
+                    opacity: 0.4;
+                }
+                100% {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+
+            .back {
+                z-index: 0;
+                animation: pulse 0.9s linear infinite;
+            }
+        }
+    }
+
+
+    .box-background {
+        display: flex;
+        transition: all 0.3s ease-in-out;
+        opacity: 0.5;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 32px;
+        z-index: 1;
+        background: linear-gradient(120deg, rgba(255,98,193,1) 0%, rgba(98,198,255,1) 33%, rgba(255,98,193,1) 66%, rgba(98,198,255,1) 100%);
+        &.alt {
+            background: linear-gradient(120deg, rgba(98,198,255,1) 0%, rgba(255,98,193,1) 33%, rgba(98,198,255,1) 66%, rgba(255,98,193,1) 100%);
+            background-size: 200% 200%;
+        }
+        filter: blur(12px);
+        animation: gradientAnimation 3s ease infinite;
+        background-size: 200% 200%;
+    }
+
+    @keyframes gradientAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+    }
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+    transition: backdrop-filter 0.3s ease-in-out;
+
+    &.hovering {
+        backdrop-filter: blur(5px);
+        transition: backdrop-filter 0.3s ease-in-out 0.05s;
+    }
+}
