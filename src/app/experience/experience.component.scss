@@ -4,6 +4,7 @@
     transition: all 0.3s ease-in-out;
     margin-bottom: 50px;
     font-family: 'Geist', sans-serif, 'Arial';
+    width: 950px;
     &:hover {
         .box-background {
             transition: all 0.3s ease-in-out;
@@ -14,7 +15,6 @@
     .exp {
         position: relative;
         margin: auto;
-        width: 900px;
         outline: 3px solid rgba(230, 230, 230, 1);
         padding: 36px;
         border-radius: 32px;

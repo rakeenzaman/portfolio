@@ -5,16 +5,16 @@ $dark-grey: #2a2a2a;
 $off-white: #f9f9f9;
 $almost-black: #101010;
 
+// rgb values to add "a" to dynamically
+:root {
+    --pink: 255, 98, 193;
+    --blue: 98, 198, 255;
+    --red: 246, 84, 84;
+}
+
+
 body {
     margin: 0;
     overflow-x: hidden;
     background: $off-white;
-}
-body::before {
-    position: fixed;
-    top: 0;
-    --line-size: 80px;
-    --line-color: $dark-grey;
-    background: linear-gradient(90deg, var(--line-color) 1px, transparent 1px) 0 0 / var(--line-size) var(--line-size), linear-gradient(var(--line-color) 1px, transparent 1px) 0 0 / var(--line-size) var(--line-size);
-    mask: linear-gradient(-360deg, transparent 40%, white);
 }
