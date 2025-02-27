@@ -47,7 +47,7 @@ import { Experience } from './experience/experience.component';
     trigger('fadeOut', [
       transition(':leave', [
         style({ opacity: 1 }),
-        animate('500ms ease-out', style({ opacity: 0 }))
+        animate('300ms ease-out', style({ opacity: 0 }))
       ])
     ]),
     trigger('fadeInOut', [
