@@ -32,20 +32,22 @@
     display: flex;
     flex-direction: column;
     z-index: 1000;
-    height: 200px;
-    width: 40px;
-    background-color: #999999;
+    height: 120px;
+    width: 30px;
+    background-color: rgba(95, 95, 95, 0.4);
+    backdrop-filter: blur(5px);
     border-radius: 20px;
     transition: all 0.3s cubic-bezier(0,.31,.02,1);
     opacity: 0;
     filter: blur(5px);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 
     &.show {
         left: 40px;
         opacity: 1;
         filter: blur(0);
         transition: all 1s cubic-bezier(0,.31,.02,1);
-        transition-delay: 1s;
+        transition-delay: 0.8s;
     }
 
     .circle {
@@ -53,11 +55,15 @@
         top: 0;
         left: 0;
         margin: 4px;
-        width: 32px;
-        height: 32px;
+        width: 22px;
+        height: 22px;
         background-color: $off-white;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.4) inset;
         border-radius: 50%;
         transition: all 1s cubic-bezier(0,.31,.02,1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         &.first-position {
             transition: all 1s cubic-bezier(0,.31,.02,1);
@@ -77,7 +83,61 @@
         &.fourth-position {
             top: 75%;
         }
+
+        @keyframes show {
+            0% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        svg {
+            opacity: 0.5;
+            animation: show 0.4s ease-in-out forwards;
+            width: 10px;
+            height: 10px;
+            fill: rgb(var(--blue));
+            transition: all 1s cubic-bezier(0,.31,.02,1);
+        }
     }
+
+    .text {
+        font-family: 'Geist', sans-serif, 'Arial';
+        position: absolute;
+        left: 40px;
+        font-size: 12px;
+        line-height: 12px;
+        opacity: 0.3;
+        transform: scale(1);
+        transition: all 0.3s cubic-bezier(0,.31,.02,1);
+        color: $almost-black;
+
+        &.show {
+            opacity: 1;
+            transition: all 0.3s cubic-bezier(0,.31,.02,1);
+            transform: scale(1.2);
+            left: calc(40px + 20%);
+        }
+    }
+
+    .about-me {
+        top: calc(0% + 8px);
+    }
+
+    .education {
+        top: calc(25% + 8px);
+    }
+
+    .experience {
+        top: calc(50% + 8px);
+    }
+
+    .projects {
+        top: calc(75% + 8px);
+    }
+
 }
 
 
@@ -227,7 +287,7 @@
     width: fit-content;
     font-family: 'Geist', sans-serif, 'Arial';
     position: fixed;
-    bottom: 200px;
+    bottom: 20%;
     left: calc(50% - 134px);
     display: flex;
     font-size: 32px;
@@ -683,6 +743,10 @@
             }
         }
     }
+}
+
+.projects-container {
+    margin-bottom: 1000px;
 }
 
 

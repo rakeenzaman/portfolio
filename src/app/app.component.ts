@@ -77,6 +77,7 @@ export class AppComponent implements AfterViewInit {
   @ViewChild('exp') exp!: ElementRef;
   @ViewChild('edu') edu!: ElementRef;
   @ViewChild('about') about!: ElementRef;
+  @ViewChild('projects') projects!: ElementRef;
   title = 'portfolio';
   atTopOfWindow = true;
   isLoading = true;
@@ -124,7 +125,7 @@ export class AppComponent implements AfterViewInit {
   };
 
   initObserver() {
-    const threshold = 0.1; 
+    const threshold = 0.1;
     const observer = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
@@ -137,12 +138,16 @@ export class AppComponent implements AfterViewInit {
               if (entry.target === this.edu.nativeElement && entry.isIntersecting) {
                 this.currentDiv = this.divs.education;
               }
+              if (entry.target === this.projects.nativeElement && entry.isIntersecting) {
+                this.currentDiv = this.divs.projects;
+              }
           });
         },
-        {rootMargin: '-49% 0% -49% 0%'}
+        {rootMargin: '-36% 0% -62% 0%'}
     );
     observer.observe(this.about.nativeElement);
     observer.observe(this.exp.nativeElement);
     observer.observe(this.edu.nativeElement);
+    observer.observe(this.projects.nativeElement);
 }
 }
