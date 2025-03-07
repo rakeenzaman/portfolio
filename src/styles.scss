@@ -1,0 +1,20 @@
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+
+$dark-grey: #2a2a2a;
+$off-white: #f9f9f9;
+$almost-black: #101010;
+
+// rgb values to add "a" to dynamically
+:root {
+    --pink: 255, 98, 193;
+    --blue: 98, 198, 255;
+    --red: 246, 84, 84;
+}
+
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+    background: $off-white;
+}
