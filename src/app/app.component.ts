@@ -87,8 +87,14 @@ export class AppComponent implements AfterViewInit {
   msuHovering = false;
   internshipHovering = false;
 
+  showCursor = false;
+  isHoveringSomething = false;
+
   divs = {aboutMe: 'about-me', education: 'education', experience: 'experience', projects: 'projects'};
   currentDiv = this.divs.aboutMe;
+
+  showEmailTooltip = false;
+  showGithubTooltip = false;
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -110,6 +116,20 @@ export class AppComponent implements AfterViewInit {
         this.showScrollDown = true;
       }, 3000);
     }
+
+    const cursor = document.getElementById("cursor");
+
+    document.body.onpointermove = event => {
+        this.showCursor = true;
+        const { clientX, clientY } = event;
+
+        cursor!.animate({
+            left: `${clientX}px`,
+            top: `${clientY}px`
+        
+        }, {duration: 1000, fill: "forwards"})
+
+    }
   }
 
   ngOnDestroy() {
@@ -125,29 +145,60 @@ export class AppComponent implements AfterViewInit {
   };
 
   initObserver() {
-    const threshold = 0.1;
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-              if (entry.target === this.about.nativeElement && entry.isIntersecting) {
-                this.currentDiv = this.divs.aboutMe;
-              }
-              if (entry.target === this.exp.nativeElement && entry.isIntersecting) {
-                this.currentDiv = this.divs.experience;
-              }
-              if (entry.target === this.edu.nativeElement && entry.isIntersecting) {
-                this.currentDiv = this.divs.education;
-              }
-              if (entry.target === this.projects.nativeElement && entry.isIntersecting) {
-                this.currentDiv = this.divs.projects;
-              }
-          });
-        },
-        {rootMargin: '-36% 0% -62% 0%'}
-    );
-    observer.observe(this.about.nativeElement);
-    observer.observe(this.exp.nativeElement);
-    observer.observe(this.edu.nativeElement);
-    observer.observe(this.projects.nativeElement);
-}
+      const threshold = 0.1;
+      const observer = new IntersectionObserver(
+          (entries) => {
+              entries.forEach((entry) => {
+                if (entry.target === this.about.nativeElement && entry.isIntersecting) {
+                  this.currentDiv = this.divs.aboutMe;
+                }
+                if (entry.target === this.exp.nativeElement && entry.isIntersecting) {
+                  this.currentDiv = this.divs.experience;
+                }
+                if (entry.target === this.edu.nativeElement && entry.isIntersecting) {
+                  this.currentDiv = this.divs.education;
+                }
+                if (entry.target === this.projects.nativeElement && entry.isIntersecting) {
+                  this.currentDiv = this.divs.projects;
+                }
+            });
+          },
+          {rootMargin: '-36% 0% -62% 0%'}
+      );
+      observer.observe(this.about.nativeElement);
+      observer.observe(this.exp.nativeElement);
+      observer.observe(this.edu.nativeElement);
+      observer.observe(this.projects.nativeElement);
+  }
+
+  emailClicked() {
+    if (!this.showEmailTooltip) {
+      navigator.clipboard.writeText('email@email.com');
+      this.showEmailTooltip = true;
+      if(this.showGithubTooltip) {
+        this.showGithubTooltip = false
+      }
+      setTimeout(() => {
+        this.showEmailTooltip = false;
+      }, 3000);
+    }
+  }
+
+  gitHubClicked() {
+    if (!this.showGithubTooltip) {
+      this.showGithubTooltip = true;
+      if(this.showEmailTooltip) {
+        this.showEmailTooltip = false
+      }
+      setTimeout(() => {
+        this.showGithubTooltip = false;
+      }, 3000);
+      setTimeout(() => {
+        window.open('https://github.com/rakeenzaman');
+      }, 1000);
+    }
+  }
+
+  hoverOn = () => this.isHoveringSomething = true;
+  hoverOff = () => this.isHoveringSomething = false;
 }
