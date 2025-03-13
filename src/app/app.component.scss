@@ -1,5 +1,36 @@
 @import '../styles.scss';
 
+#cursor{
+    height: 36px;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    transition: all 0.1s ease;
+    opacity: 0;
+    scale: 0;
+    transition: all 0.3s ease;
+    background-color: rgb(0 0 0 / 0.1);
+
+    .about-me {
+        width: 100%;
+        height: 100%;
+        background-color: rgb(var(--red));
+        z-index: 9001;
+        border-radius: 50%;
+    }
+
+    &.show {
+        transition: all 0.3s ease;
+        opacity: 1;
+        scale: 1;
+    }
+}
+
 .spinner-container {
     position: fixed;
     top: 50%;
@@ -32,8 +63,8 @@
     display: flex;
     flex-direction: column;
     z-index: 1000;
-    height: 120px;
-    width: 30px;
+    height: 144px;
+    width: 36px;
     background-color: rgba(95, 95, 95, 0.4);
     backdrop-filter: blur(5px);
     border-radius: 20px;
@@ -55,8 +86,8 @@
         top: 0;
         left: 0;
         margin: 4px;
-        width: 22px;
-        height: 22px;
+        width: 28px;
+        height: 28px;
         background-color: $off-white;
         box-shadow: 0 0 2px rgba(0, 0, 0, 0.4) inset;
         border-radius: 50%;
@@ -96,8 +127,8 @@
         svg {
             opacity: 0.5;
             animation: show 0.4s ease-in-out forwards;
-            width: 10px;
-            height: 10px;
+            width: 14px;
+            height: 14px;
             fill: rgb(var(--blue));
             transition: all 1s cubic-bezier(0,.31,.02,1);
         }
@@ -106,7 +137,7 @@
     .text {
         font-family: 'Geist', sans-serif, 'Arial';
         position: absolute;
-        left: 40px;
+        left: 50px;
         font-size: 12px;
         line-height: 12px;
         opacity: 0.3;
@@ -118,24 +149,24 @@
             opacity: 1;
             transition: all 0.3s cubic-bezier(0,.31,.02,1);
             transform: scale(1.2);
-            left: calc(40px + 20%);
+            left: calc(50px + 17%);
         }
     }
 
     .about-me {
-        top: calc(0% + 8px);
+        top: calc(0% + 11px);
     }
 
     .education {
-        top: calc(25% + 8px);
+        top: calc(25% + 11px);
     }
 
     .experience {
-        top: calc(50% + 8px);
+        top: calc(50% + 11px);
     }
 
     .projects {
-        top: calc(75% + 8px);
+        top: calc(75% + 11px);
     }
 
 }
@@ -449,7 +480,6 @@
 }
 
 .fancy-btn {
-    overflow: hidden;
     background-color: rgb(var(--red));
     border-radius: 40px;
     width: fit-content;
@@ -478,6 +508,7 @@
         font-weight: 400;
         color: $off-white;
         font-size: 22px;
+        overflow: hidden;
     }
 
     @keyframes textAnimation {
@@ -505,6 +536,42 @@
         width: 24px;
         height: 24px;
     }
+}
+
+@keyframes tooltip {
+    0% {
+        opacity: 0;
+        transform: translate(-50%,-50px);
+    }
+    10% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+    90% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%,-50px);
+    }
+}
+
+.alert {
+    z-index: 1000;
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: fit-content;
+    font-family: 'Geist', sans-serif, 'Arial';
+    font-size: 20px;
+    background-color: rgb(var(--red), 0.7);
+    padding: 18px;
+    border-radius: 36px;
+    color: white;
+    backdrop-filter: blur(5px);
+    animation: tooltip 3s cubic-bezier(0,.31,.02,1);
 }
 
 .code-buttons {
