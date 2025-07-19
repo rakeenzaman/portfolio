@@ -1,0 +1,32 @@
+<div 
+  class="project-container" 
+  (mousemove)="onMouseMove($event)"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()"
+  [ngStyle]="{
+    'transform': 'perspective(1000px) rotateX(' + (yDistanceFromCenter * 0.2) + 'deg) rotateY(' + (xDistanceFromCenter * -0.2) + 'deg)'}">
+    <div class="content">
+        <div class="title">
+            <div class="text">Project Name</div>
+            <div class="year">2025</div>
+        </div>
+        <div class="description-container"></div>
+        <div class="buttons">
+            <div class="button">View</div>
+            <div class="button">View</div>
+        </div>
+    </div>
+    <div class="overlay-and-texture" [ngStyle]="{
+        'opacity': 0.1 + rotationPercentage() / 3,
+      }">
+        <div class="overlay" [ngStyle]="{
+            'background-position': (50 + xDistanceFromCenter * 0.5) + '% ' + (50 + yDistanceFromCenter * 0.5) + '%'
+          }"></div>
+        <div class="texture two"></div>
+        <div class="texture"></div>
+        <div class="glare" [class.not-active]="!isMouseOver"
+        [ngStyle]="{
+            'background-position': (50 - xDistanceFromCenter * 0.5) + '% ' + (50 - yDistanceFromCenter * 0.5) + '%'
+          }"></div>
+    </div>
+</div>

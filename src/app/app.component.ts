@@ -3,12 +3,13 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Experience } from './experience/experience.component';
+import { Project } from './project/project.component';
 import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, Experience],
+  imports: [RouterOutlet, CommonModule, Experience, Project],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   animations: [
@@ -71,10 +72,23 @@ import { filter } from 'rxjs';
         animate('0.5s cubic-bezier(0,.31,.02,1)')
       ])
     ]),
+    trigger('welcomeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, width: '0', transform: 'translateX(0px)', filter: 'blur(5px)' }),
+        animate('1000ms ease-in-out', style({ opacity: 1, width: '*', transform: 'translateX(0)', filter: 'blur(0px)' }))
+      ]),
+    ]),
+    trigger('alertTextAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, width: '0', transform: 'translateX(0px)', filter: 'blur(5px)', marginLeft: '0px' }),
+        animate('700ms 600ms ease-in-out', style({ opacity: 1, width: '*', transform: 'translateX(0)', filter: 'blur(0px)', marginLeft: '12px' }),)
+      ]),
+    ]),
   ]
 })
 export class AppComponent implements AfterViewInit {
   @ViewChild('exp') exp!: ElementRef;
+  @ViewChild('skills') skills!: ElementRef;
   @ViewChild('edu') edu!: ElementRef;
   @ViewChild('about') about!: ElementRef;
   @ViewChild('projects') projects!: ElementRef;
@@ -86,17 +100,21 @@ export class AppComponent implements AfterViewInit {
   cspireHovering = false;
   msuHovering = false;
   internshipHovering = false;
+  skillsHovering = false;
 
   showCursor = false;
   isHoveringSomething = false;
 
-  divs = {aboutMe: 'about-me', education: 'education', experience: 'experience', projects: 'projects'};
+  divs = {aboutMe: 'about-me', education: 'education', experience: 'experience', skills: 'skills', projects: 'projects'};
   currentDiv = this.divs.aboutMe;
 
   showEmailTooltip = false;
-  showGithubTooltip = false;
+
+  showWelcomeMsg = false;
+  scrollPercentage = 0;
 
   ngAfterViewInit() {
+    this.isLoading = false;
     setTimeout(() => {
       window.scrollTo(0, 0);
       this.isLoading = false;
@@ -110,7 +128,7 @@ export class AppComponent implements AfterViewInit {
     window.addEventListener('scroll', this.onScroll);
 
     if (window.scrollY < 120) {
-      document.body.style.overflow = 'hidden';
+      //document.body.style.overflow = 'hidden';
       setTimeout(() => {
         document.body.style.overflow = '';
         this.showScrollDown = true;
@@ -123,13 +141,26 @@ export class AppComponent implements AfterViewInit {
         this.showCursor = true;
         const { clientX, clientY } = event;
 
-        cursor!.animate({
+        cursor?.animate({
             left: `${clientX}px`,
             top: `${clientY}px`
         
         }, {duration: 1000, fill: "forwards"})
 
     }
+
+    setTimeout(() => {
+      this.showWelcomeMsg = true;
+    }, 1500);
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      this.scrollPercentage = parseInt(((scrollTop / scrollHeight) * 100).toFixed(0));
+      document.getElementById('background')!.style.setProperty('transform', `translate(-50%, calc(-100px - ${this.scrollPercentage*4}px))`);
+      document.getElementById('background2')!.style.setProperty('transform', `translate(-50%, calc(-100px - ${this.scrollPercentage*4}px))`);
+      document.getElementById('background3')!.style.setProperty('transform', `translate(-50%, calc(-100px - ${this.scrollPercentage*4}px))`);
+    });
   }
 
   ngOnDestroy() {
@@ -141,6 +172,7 @@ export class AppComponent implements AfterViewInit {
       this.atTopOfWindow = true;
     } else {
       this.atTopOfWindow = false;
+      console.log('not at top of window');
     }
   };
 
@@ -161,6 +193,9 @@ export class AppComponent implements AfterViewInit {
                 if (entry.target === this.projects.nativeElement && entry.isIntersecting) {
                   this.currentDiv = this.divs.projects;
                 }
+                if (entry.target === this.skills.nativeElement && entry.isIntersecting) {
+                  this.currentDiv = this.divs.skills;
+                }
             });
           },
           {rootMargin: '-36% 0% -62% 0%'}
@@ -169,36 +204,20 @@ export class AppComponent implements AfterViewInit {
       observer.observe(this.exp.nativeElement);
       observer.observe(this.edu.nativeElement);
       observer.observe(this.projects.nativeElement);
+      observer.observe(this.skills.nativeElement);
   }
 
   emailClicked() {
     if (!this.showEmailTooltip) {
       navigator.clipboard.writeText('email@email.com');
       this.showEmailTooltip = true;
-      if(this.showGithubTooltip) {
-        this.showGithubTooltip = false
-      }
       setTimeout(() => {
         this.showEmailTooltip = false;
-      }, 3000);
+      }, 5000);
     }
   }
 
-  gitHubClicked() {
-    if (!this.showGithubTooltip) {
-      this.showGithubTooltip = true;
-      if(this.showEmailTooltip) {
-        this.showEmailTooltip = false
-      }
-      setTimeout(() => {
-        this.showGithubTooltip = false;
-      }, 3000);
-      setTimeout(() => {
-        window.open('https://github.com/rakeenzaman');
-      }, 1000);
-    }
-  }
-
+  gitHubClicked = () => window.open('https://github.com/rakeenzaman');
   hoverOn = () => this.isHoveringSomething = true;
   hoverOff = () => this.isHoveringSomething = false;
 }

@@ -1,0 +1,163 @@
+.project-container {
+  width: 400px;
+  height: 400px;
+  transition: all 0.4s ease-out;
+  transform-style: preserve-3d;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(104, 162, 255, 0.122) 0%, rgba(104, 162, 255,0) 50%, rgba(104, 162, 255,0) 70%, rgba(104, 162, 255, 0.058) 100%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.075), 0 0 3px rgba(230, 230, 230, 0.058) inset,0 0 6px rgba(230, 230, 230, 0.062) inset, 0 0 10px rgba(255,255,255,0.048) inset, 0 0 40px rgba(255,255,255,0.047) inset;
+  background-size: 200% 200%;
+
+  p {
+    pointer-events: none;
+  }
+}
+
+.content {
+    font-family: 'Geist', sans-serif, 'Arial';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    z-index: 6;
+    pointer-events: none;
+    padding: 20px;
+
+    .title {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        .text {
+            font-size: 24px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .year {
+            background-color: white;
+            color: black;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            height: fit-content;
+        }
+    }
+
+    .description-container {
+        width: 100%;
+        border-radius: 12px;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.809);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.715), 0 0 3px rgba(230, 230, 230, 0.058) inset,0 0 6px rgba(230, 230, 230, 0.062) inset, 0 0 10px rgba(255,255,255,0.048) inset, 0 0 40px rgba(255,255,255,0.047) inset;
+        backdrop-filter: blur(5px);
+        z-index: 7;
+        margin-bottom: 20px;
+
+
+        .description {}
+    }
+
+    .buttons {
+        display: flex;
+        gap: 20px;
+        width: 100%;
+
+        .button {
+            font-size: 18px;
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.715), 0 0 3px rgba(230, 230, 230, 0.058) inset,0 0 6px rgba(230, 230, 230, 0.062) inset, 0 0 10px rgba(255,255,255,0.048) inset, 0 0 40px rgba(255,255,255,0.047) inset;
+            padding: 8px 8px;
+            width: calc(50% - 10px);
+            border-radius: 12px;
+            pointer-events: all;
+            cursor: pointer;
+            user-select: none;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 0 3px rgba(230, 230, 230, 0.058) inset,0 0 6px rgba(230, 230, 230, 0.062) inset, 0 0 10px rgba(255,255,255,0.048) inset, 0 0 40px rgba(255,255,255,0.047) inset;
+            }
+        }
+    }
+}
+
+.overlay-and-texture {
+    transition: all 0.4s ease-out;
+
+    .texture {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-image: url("../../assets/images/metal.png");
+        background-size: 15%;
+        z-index: 2;
+        border-radius: 24px;
+
+        &.two {
+            background-image: url("../../assets/images/glitter.png");
+            background-size: 50%;
+            opacity: 0.3;
+            z-index: 3;
+        }
+       
+    }
+
+    .glare {
+        z-index: 4;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 24px;
+        background-image: radial-gradient( 
+            circle, 
+            hsl(0, 0%, 75%) 5%, 
+            hsl(200, 5%, 35%) 60%, 
+            hsl(320, 40%, 10%) 150% 
+          );
+        mix-blend-mode: color-burn;
+        background-size: 200% 200%;
+
+        .active {
+            transition: all 0.4s ease-out;
+        }
+    }
+    
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+  45deg,
+  #ff0000 0%,    /* Red */
+  #ff8000 16.66%, /* Orange */
+  #ffff00 33.33%, /* Yellow */
+  #00ff00 50%,    /* Green */
+  #0080ff 66.66%, /* Blue */
+  #8000ff 83.33%, /* Indigo */
+  #ff00ff 100%    /* Violet */
+);
+      background-size: 200% 200%;
+        z-index: 3;
+        mix-blend-mode: multiply;
+        border-radius: 24px;
+    }
+
+}
