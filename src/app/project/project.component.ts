@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -33,6 +33,8 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class Project {
+  @ViewChild('container') containerRef!: ElementRef;
+
 
     mouseX: number = 0;
     mouseY: number = 0;
@@ -40,15 +42,17 @@ export class Project {
     xDistanceFromCenter: number = 0;
     yDistanceFromCenter: number = 0;
 
-    onMouseMove(event: MouseEvent) {
-        event.stopPropagation();
-
-        const rect = (event.target as HTMLElement).getBoundingClientRect();
-        this.mouseX = event.clientX - rect.left;
-        this.mouseY = event.clientY - rect.top;
-
-        this.xDistanceFromCenter = ((this.mouseX - rect.width / 2) / (rect.width / 2)) * 100;
-        this.yDistanceFromCenter = ((this.mouseY - rect.height / 2) / (rect.height / 2)) * 100;
+    onMouseMove(event: MouseEvent): void {
+      const rect = this.containerRef.nativeElement.getBoundingClientRect();
+    
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+    
+      this.mouseX = mouseX;
+      this.mouseY = mouseY;
+    
+      this.xDistanceFromCenter = ((mouseX - rect.width / 2) / (rect.width / 2)) * 100;
+      this.yDistanceFromCenter = ((mouseY - rect.height / 2) / (rect.height / 2)) * 100;
     }
 
     rotationPercentage() {

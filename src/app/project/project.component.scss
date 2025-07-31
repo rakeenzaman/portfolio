@@ -56,16 +56,21 @@
 
     .description-container {
         width: 100%;
+        max-width: 100%;
         border-radius: 12px;
         height: 100%;
-        background: rgba(0, 0, 0, 0.809);
+        background: rgba(0, 0, 0, 0.5);
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.715), 0 0 3px rgba(230, 230, 230, 0.058) inset,0 0 6px rgba(230, 230, 230, 0.062) inset, 0 0 10px rgba(255,255,255,0.048) inset, 0 0 40px rgba(255,255,255,0.047) inset;
         backdrop-filter: blur(5px);
         z-index: 7;
         margin-bottom: 20px;
 
 
-        .description {}
+        .description {
+            text-align: left;
+            padding: 12px;
+            overflow: hidden;
+        }
     }
 
     .buttons {
@@ -75,7 +80,7 @@
 
         .button {
             font-size: 18px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.5);
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.715), 0 0 3px rgba(230, 230, 230, 0.058) inset,0 0 6px rgba(230, 230, 230, 0.062) inset, 0 0 10px rgba(255,255,255,0.048) inset, 0 0 40px rgba(255,255,255,0.047) inset;
             padding: 8px 8px;
             width: calc(50% - 10px);
@@ -83,9 +88,12 @@
             pointer-events: all;
             cursor: pointer;
             user-select: none;
+            transition: all 0.2s ease-out;
 
             &:hover {
-                background: rgba(255, 255, 255, 0.1);
+                color: black;
+                transition: all 0.2s ease-out;
+                background: rgb(255, 255, 255);
                 box-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 0 3px rgba(230, 230, 230, 0.058) inset,0 0 6px rgba(230, 230, 230, 0.062) inset, 0 0 10px rgba(255,255,255,0.048) inset, 0 0 40px rgba(255,255,255,0.047) inset;
             }
         }
@@ -103,7 +111,7 @@
         top: 0;
         left: 0;
         background-image: url("../../assets/images/metal.png");
-        background-size: 15%;
+        background-size: 30%;
         z-index: 2;
         border-radius: 24px;
 

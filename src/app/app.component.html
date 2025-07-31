@@ -2,9 +2,12 @@
   <div class="spinner"></div>
 </div>
 
-<div class="discord-style-background" id="background"></div>
-<div class="discord-style-background two" id="background2"></div>
-<div class="discord-style-background three" id="background3"></div>
+<div id="background" style="opacity: 1;">
+  <div class="new-background"></div>
+  <div class="new-background two"></div>
+  <div class="new-background three"></div>
+</div>
+
 
 
 <div class="side-nav-thing" [class.show]="!atTopOfWindow">
@@ -37,7 +40,7 @@
 
 <div *ngIf="!isLoading">
   <div class="header" [@header]="atTopOfWindow">
-    <div class="text">
+    <div class="text" [class.big]="atTopOfWindow">
       <div class="hi-im-rakeen">
         <div class="letter">H</div>
         <div class="letter">i</div>

@@ -157,9 +157,13 @@ export class AppComponent implements AfterViewInit {
       const scrollTop = window.scrollY;
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
       this.scrollPercentage = parseInt(((scrollTop / scrollHeight) * 100).toFixed(0));
-      document.getElementById('background')!.style.setProperty('transform', `translate(-50%, calc(-100px - ${this.scrollPercentage*4}px))`);
-      document.getElementById('background2')!.style.setProperty('transform', `translate(-50%, calc(-100px - ${this.scrollPercentage*4}px))`);
-      document.getElementById('background3')!.style.setProperty('transform', `translate(-50%, calc(-100px - ${this.scrollPercentage*4}px))`);
+      if (this.scrollPercentage > 10) {
+        document.getElementById('background')!.style.setProperty('opacity', `0.${Math.abs(this.scrollPercentage - 100)}`);
+      }
+      if (this.scrollPercentage > 90) {
+        document.getElementById('background')!.style.setProperty('opacity', `0`);
+      }
+      console.log(`0.${Math.abs(this.scrollPercentage - 100)}`);
     });
   }
 

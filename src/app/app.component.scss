@@ -29,6 +29,16 @@
         animation: three 2.3s infinite alternate;
 
     }
+
+    &.four {
+        opacity: 0.1;
+        width: 1100px;
+        height: 900px;
+        background-color: rgb(245, 52, 252);
+        animation: three 2.3s infinite alternate;
+        filter: blur(500px);
+
+    }
 }
 
 @keyframes one {
@@ -65,6 +75,19 @@
     }
     100% {
         filter: blur(240px);
+        width: 1200px;
+        height: 800px;
+    }
+}
+
+@keyframes four {
+    0% {
+        filter: blur(500px);
+        width: 1100px;
+        height: 800px;
+    }
+    100% {
+        filter: blur(500px);
         width: 1200px;
         height: 800px;
     }
@@ -413,6 +436,13 @@
             :nth-child(14) {
                 animation-delay: 0.90s;
             }
+        }
+
+        transition: 0.6s all cubic-bezier(0,.31,.02,1);
+
+        &.big {
+            transform: scale(1.2);
+            transition: all 0.6s cubic-bezier(0,.31,.02,1);
         }
 
     }
@@ -1040,6 +1070,35 @@
     .projects {
         display: flex;
         justify-content: center;
+    }
+}
+
+.new-background {
+    position: fixed;
+    top: -100px;
+    left: -50%;
+    width: 200%;
+    height: 100px;
+    //z-index: 1;
+    background: #ff3ce2 linear-gradient(90deg, #ff3ce2, #479aff, #ff3ce2);
+    background-size: 200% 100%;
+    animation: glow 8s linear infinite;
+    filter: blur(50px);
+
+    &.two {
+        filter: blur(300px);
+    }
+
+    &.three {
+        filter: blur(600px);
+    }
+    @keyframes glow {
+        0% {
+            background-position: -200% 50%;
+        }
+        100% {
+            background-position: 200% 50%;
+        }
     }
 }
 
