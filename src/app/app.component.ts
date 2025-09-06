@@ -161,7 +161,7 @@ export class AppComponent implements AfterViewInit {
         document.getElementById('background')!.style.setProperty('opacity', `0.${Math.abs(this.scrollPercentage - 100)}`);
       }
       if (this.scrollPercentage > 90) {
-        document.getElementById('background')!.style.setProperty('opacity', `0`);
+        document.getElementById('background')!.style.setProperty('opacity', `0.1`);
       }
       console.log(`0.${Math.abs(this.scrollPercentage - 100)}`);
     });
