@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -30,10 +30,27 @@ import { CommonModule } from '@angular/common';
         animate('200ms ease-in-out', style({ height: '0px', opacity: 0 }))
       ])
     ]),
+    trigger('btnLogoAnimation', [
+      transition(':enter', [
+        style({ width: '0px', opacity: 0}),
+        animate('200ms ease-in-out', style({ width: '*', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        style({ width: '*', opacity: 1}),
+        animate('200ms ease-in-out', style({ width: '0px', opacity: 0 }))
+      ])
+    ]),
   ]
 })
 export class Project {
+  @Input() name = "Project Name";
+  @Input() githubUrl = "";
+  @Input() liveDemoUrl = "";
+  @Input() languages = "";
+  @Input() description = "This is a brief description of the project, highlighting its main features and technologies used.";
   @ViewChild('container') containerRef!: ElementRef;
+  githubHovering: boolean = false;
+  liveDemoHovering: boolean = false;
 
 
     mouseX: number = 0;
@@ -70,5 +87,9 @@ export class Project {
         this.mouseY = 0;
         this.xDistanceFromCenter = 0;
         this.yDistanceFromCenter = 0;
+    }
+
+    getLanguagesArray(): string[] {
+        return this.languages.split(',').map(lang => lang.trim());
     }
 }

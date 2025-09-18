@@ -75,7 +75,7 @@ import { filter } from 'rxjs';
     trigger('welcomeAnimation', [
       transition(':enter', [
         style({ opacity: 0, width: '0', transform: 'translateX(0px)', filter: 'blur(5px)' }),
-        animate('1000ms ease-in-out', style({ opacity: 1, width: '*', transform: 'translateX(0)', filter: 'blur(0px)' }))
+        animate('1200ms 150ms cubic-bezier(0,.31,.02,1)', style({ opacity: 1, width: '*', transform: 'translateX(0)', filter: 'blur(0px)' }))
       ]),
     ]),
     trigger('alertTextAnimation', [
@@ -83,6 +83,16 @@ import { filter } from 'rxjs';
         style({ opacity: 0, width: '0', transform: 'translateX(0px)', filter: 'blur(5px)', marginLeft: '0px' }),
         animate('700ms 600ms ease-in-out', style({ opacity: 1, width: '*', transform: 'translateX(0)', filter: 'blur(0px)', marginLeft: '12px' }),)
       ]),
+    ]),
+    trigger('backgroundFadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('200ms ease-in', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        style({ opacity: 1 }),
+        animate('200ms 200ms ease-out', style({ opacity: 0 }))
+      ])
     ]),
   ]
 })
@@ -114,14 +124,16 @@ export class AppComponent implements AfterViewInit {
   scrollPercentage = 0;
 
   ngAfterViewInit() {
-    this.isLoading = false;
     setTimeout(() => {
       window.scrollTo(0, 0);
       this.isLoading = false;
       setTimeout(() => {
         this.initObserver();
       }, 0);
-    }, 1000);
+      setTimeout(() => {
+        this.showWelcomeMsg = true;
+      }, 1500);
+    }, 1500);
     console.log('App component initialized');
     window.scrollTo(0, 0);
     console.log(window.scrollY);
@@ -149,21 +161,10 @@ export class AppComponent implements AfterViewInit {
 
     }
 
-    setTimeout(() => {
-      this.showWelcomeMsg = true;
-    }, 1500);
-
     window.addEventListener('scroll', () => {
       const scrollTop = window.scrollY;
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
       this.scrollPercentage = parseInt(((scrollTop / scrollHeight) * 100).toFixed(0));
-      if (this.scrollPercentage > 10) {
-        document.getElementById('background')!.style.setProperty('opacity', `0.${Math.abs(this.scrollPercentage - 100)}`);
-      }
-      if (this.scrollPercentage > 90) {
-        document.getElementById('background')!.style.setProperty('opacity', `0.1`);
-      }
-      console.log(`0.${Math.abs(this.scrollPercentage - 100)}`);
     });
   }
 
@@ -176,7 +177,6 @@ export class AppComponent implements AfterViewInit {
       this.atTopOfWindow = true;
     } else {
       this.atTopOfWindow = false;
-      console.log('not at top of window');
     }
   };
 
