@@ -6,12 +6,6 @@ import { BriefcaseIcon, CloseIcon, GradCapIcon, PlusIcon } from './Icons'
 
 const MOBILE_QUERY = '(max-width: 820px)'
 
-// Horizontal reads left (earliest) -> right (present); the data is newest-first.
-const chronological = [...timeline].reverse()
-
-// Degrees and the current role are the highlights; other roles are shown smaller.
-const isFeatured = (e: TimelineEntry) => e.kind === 'education' || !!e.current
-
 function useIsMobile() {
   const [mobile, setMobile] = useState(() => window.matchMedia(MOBILE_QUERY).matches)
   useEffect(() => {
@@ -38,21 +32,13 @@ function DetailsButton({ entry, onOpen }: { entry: TimelineEntry; onOpen: (e: Ti
 
 function HorizontalEntry({
   entry,
-  above,
   onOpen,
 }: {
   entry: TimelineEntry
-  above: boolean
   onOpen: (e: TimelineEntry) => void
 }) {
-  const size = isFeatured(entry) ? 'featured' : 'small'
   return (
-    <div
-      className={`t-col t-item ${entry.kind} ${size} ${entry.current ? 'current' : ''} ${
-        above ? 'above' : 'below'
-      }`}
-    >
-      <div className="t-dot">{icon(entry)}</div>
+    <div className={`t-col t-item ${entry.kind} above ${entry.current ? 'current' : ''}`}>
       <div className="t-card">
         <span className="t-dates">{entry.dates}</span>
         <h3 className="t-title">{entry.title}</h3>
@@ -60,6 +46,8 @@ function HorizontalEntry({
         <div className="t-org">{entry.org}</div>
         <DetailsButton entry={entry} onOpen={onOpen} />
       </div>
+      <div className="t-connector" aria-hidden="true" />
+      <div className="t-dot">{icon(entry)}</div>
     </div>
   )
 }
@@ -89,17 +77,34 @@ function VerticalEntry({
   )
 }
 
+function EducationGrid({ entries }: { entries: TimelineEntry[] }) {
+  return (
+    <div className="education-grid">
+      {entries.map((entry) => (
+        <article className="education-card t-item education" data-lit key={entry.title} data-reveal>
+          <div className="t-card">
+            <div className="education-card-icon t-dot">{icon(entry)}</div>
+            <div>
+              <span className="t-dates">{entry.dates}</span>
+              <h3 className="t-title">{entry.title}</h3>
+              <div className="t-subtitle">{entry.subtitle}</div>
+              <div className="t-org">{entry.org}</div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  )
+}
+
 function DetailsModal({ entry, onClose }: { entry: TimelineEntry; onClose: () => void }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
     document.addEventListener('keydown', onKey)
-    const prevOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = prevOverflow
     }
   }, [onClose])
 
@@ -133,9 +138,15 @@ function DetailsModal({ entry, onClose }: { entry: TimelineEntry; onClose: () =>
   )
 }
 
-export default function Timeline() {
-  const mobile = useIsMobile()
-  const [active, setActive] = useState<TimelineEntry | null>(null)
+function TimelineTrack({
+  entries,
+  mobile,
+  onOpen,
+}: {
+  entries: TimelineEntry[]
+  mobile: boolean
+  onOpen: (entry: TimelineEntry) => void
+}) {
   const trackRef = useRef<HTMLDivElement>(null)
   const lineRef = useRef<HTMLDivElement>(null)
   const fillRef = useRef<HTMLDivElement>(null)
@@ -174,7 +185,10 @@ export default function Timeline() {
         line.style.height = `${last - first}px`
         fill.style.top = `${first}px`
         fill.style.height = `${filled}px`
-        items.forEach((item, i) => item.toggleAttribute('data-lit', filled + first >= centers[i]))
+        items.forEach((item, i) => {
+          item.style.removeProperty('--connector-height')
+          item.toggleAttribute('data-lit', filled + first >= centers[i])
+        })
       } else {
         // horizontal: line is fully filled and every node lit from the start
         const centers = rects.map((r) => r.left + r.width / 2 - trackRect.left)
@@ -186,7 +200,9 @@ export default function Timeline() {
         line.style.width = `${last - first}px`
         fill.style.left = `${first}px`
         fill.style.width = `${last - first}px`
-        items.forEach((item) => item.toggleAttribute('data-lit', true))
+        items.forEach((item) => {
+          item.toggleAttribute('data-lit', true)
+        })
       }
     }
 
@@ -231,22 +247,47 @@ export default function Timeline() {
     }
   }, [mobile])
 
+  // Horizontal reads left (earliest) -> right (present); the data is newest-first.
+  const chronological = [...entries].reverse()
+
   return (
-    <section className="section" id="timeline">
-      <div className="section-head" data-reveal>
-        <span className="section-num">02</span>
-        <h2 className="section-title">Experience &amp; Education</h2>
-      </div>
-      <div className={`timeline ${mobile ? 'vertical' : 'horizontal'}`} ref={trackRef}>
-        <div className="t-line" aria-hidden="true" ref={lineRef} />
-        <div className="t-line-fill" aria-hidden="true" ref={fillRef} />
-        {mobile
-          ? timeline.map((entry) => <VerticalEntry key={entry.title} entry={entry} onOpen={setActive} />)
-          : chronological.map((entry, i) => (
-              <HorizontalEntry key={entry.title} entry={entry} above={i % 2 === 0} onOpen={setActive} />
-            ))}
-      </div>
+    <div className={`timeline experience-timeline ${mobile ? 'vertical' : 'horizontal'}`} ref={trackRef}>
+      <div className="t-line" aria-hidden="true" ref={lineRef} />
+      <div className="t-line-fill" aria-hidden="true" ref={fillRef} />
+      {mobile
+        ? entries.map((entry) => <VerticalEntry key={entry.title} entry={entry} onOpen={onOpen} />)
+        : chronological.map((entry) => (
+            <HorizontalEntry key={entry.title} entry={entry} onOpen={onOpen} />
+          ))}
+    </div>
+  )
+}
+
+export default function Timeline() {
+  const mobile = useIsMobile()
+  const [active, setActive] = useState<TimelineEntry | null>(null)
+  const experience = timeline.filter((entry) => entry.kind === 'work')
+  const education = timeline.filter((entry) => entry.kind === 'education')
+
+  return (
+    <>
+      <section className="section" id="education">
+        <div className="section-head" data-reveal>
+          <span className="section-num">02</span>
+          <h2 className="section-title">Education</h2>
+        </div>
+        <EducationGrid entries={education} />
+      </section>
+
+      <section className="section" id="experience">
+        <div className="section-head" data-reveal>
+          <span className="section-num">03</span>
+          <h2 className="section-title">Experience</h2>
+        </div>
+        <TimelineTrack entries={experience} mobile={mobile} onOpen={setActive} />
+      </section>
+
       {active && <DetailsModal entry={active} onClose={() => setActive(null)} />}
-    </section>
+    </>
   )
 }

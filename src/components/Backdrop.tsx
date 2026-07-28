@@ -50,7 +50,7 @@ export default function Backdrop() {
         y: Math.random() * canvas.height,
         r: (0.5 + Math.random() * 1.1) * dpr,
         phase: Math.random() * Math.PI * 2,
-        speed: 0.4 + Math.random() * 1.1,
+        speed: 0.8 + Math.random() * 1.8,
         color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
       }))
     }

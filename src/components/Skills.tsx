@@ -4,13 +4,21 @@ export default function Skills() {
   return (
     <section className="section" id="skills">
       <div className="section-head" data-reveal>
-        <span className="section-num">03</span>
+        <span className="section-num">04</span>
         <h2 className="section-title">Skills</h2>
       </div>
+
       <div className="skill-grid">
         {skillCategories.map((category, i) => (
-          <div className="skill-category" key={category.name} data-reveal data-delay={String(100 + i * 120)}>
-            <h3 className="skill-category-name">{category.name}</h3>
+          <article
+            className={`skill-category ${i === 0 ? 'skill-category-wide' : ''}`}
+            key={category.name}
+            data-reveal
+            data-delay={String(100 + i * 120)}
+          >
+            <div className="skill-category-head">
+              <h3 className="skill-category-name">{category.name}</h3>
+            </div>
             <div className="chips">
               {category.skills.map((skill) => (
                 <span className="chip" key={skill}>
@@ -18,7 +26,7 @@ export default function Skills() {
                 </span>
               ))}
             </div>
-          </div>
+          </article>
         ))}
       </div>
     </section>

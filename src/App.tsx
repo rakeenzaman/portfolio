@@ -12,7 +12,8 @@ import { useReveal } from './hooks/useReveal'
 
 const SECTIONS = [
   { id: 'about', label: 'About Me' },
-  { id: 'timeline', label: 'Timeline' },
+  { id: 'education', label: 'Education' },
+  { id: 'experience', label: 'Experience' },
   { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
 ]

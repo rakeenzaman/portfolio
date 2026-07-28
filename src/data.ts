@@ -80,9 +80,12 @@ export const timeline: TimelineEntry[] = [
 ]
 
 export const skillCategories: SkillCategory[] = [
-  { name: 'Frontend', skills: ['Angular', 'TypeScript', 'JavaScript', 'CSS', 'HTML', 'React'] },
-  { name: 'Backend', skills: ['Java', 'Spring Boot', 'Python'] },
-  { name: 'Tools', skills: ['Git', 'GitHub', 'GitLab', 'Jenkins'] },
+  {
+    name: 'Frontend',
+    skills: ['Angular', 'React', 'Next.js', 'TypeScript', 'JavaScript', 'HTML', 'CSS'],
+  },
+  { name: 'Backend & CMS', skills: ['Java', 'Spring Boot', 'Python', 'Sanity CMS'] },
+  { name: 'Tools & Cloud', skills: ['Git', 'GitHub', 'GitLab', 'Vercel', 'Jenkins'] },
 ]
 
 export const projects: Project[] = [

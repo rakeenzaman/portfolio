@@ -27,6 +27,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-y: scroll;
 }
 
 body {
@@ -359,6 +360,58 @@ body {
 /* ============================================================
    Timeline
    ============================================================ */
+.education-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+}
+
+.education-card .t-card {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 24px;
+  box-shadow: 0 0 0 1px rgba(90, 200, 255, 0.12), 0 10px 34px rgba(90, 200, 255, 0.07);
+}
+
+.education-card-icon.t-dot {
+  position: relative;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-color: var(--blue);
+  color: var(--blue);
+  box-shadow: 0 0 14px rgba(90, 200, 255, 0.35);
+}
+
+.education-card-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.education-card .t-dates {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.7rem;
+}
+
+.education-card .t-title {
+  font-size: 1.12rem;
+}
+
+.education-card .t-subtitle {
+  margin-top: 2px;
+  font-size: 0.84rem;
+}
+
+.education-card .t-org {
+  margin-top: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+}
+
 .timeline {
   position: relative;
   animation: t-fade 0.7s ease both;
@@ -404,8 +457,8 @@ body {
 }
 
 .t-dot svg {
-  width: 11px;
-  height: 11px;
+  width: 18px;
+  height: 18px;
 }
 
 .t-item[data-lit] .t-dot {
@@ -733,6 +786,133 @@ body {
   margin-top: 10px;
 }
 
+/* Experience uses one consistent row of cards above the timeline. */
+.experience-timeline.horizontal {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 0.95fr) minmax(0, 1.1fr);
+  column-gap: 18px;
+  height: 205px;
+  width: 100%;
+  margin-left: 0;
+  padding-inline: 0;
+}
+
+.experience-timeline.horizontal .t-line,
+.experience-timeline.horizontal .t-line-fill,
+.experience-timeline.horizontal .t-dot {
+  top: calc(100% - 13px);
+}
+
+.experience-timeline.horizontal .t-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.experience-timeline.horizontal .t-connector {
+  width: 1px;
+  height: 26px;
+  flex: 0 0 26px;
+  background: var(--line-strong);
+}
+
+.experience-timeline.horizontal .t-col.above .t-card {
+  position: relative;
+  top: auto;
+  bottom: auto;
+  left: auto;
+  transform: none;
+  flex: 0 0 auto;
+}
+
+.experience-timeline.horizontal .t-card::after {
+  display: none;
+}
+
+.experience-timeline.horizontal .t-col {
+  flex: 1;
+}
+
+.experience-timeline.horizontal .t-dot {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+}
+
+.experience-timeline.horizontal .t-dot svg {
+  width: 11px;
+  height: 11px;
+}
+
+.experience-timeline.horizontal .t-card {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  padding: 14px 16px;
+}
+
+.experience-timeline.horizontal .t-col:not(.current) .t-card {
+  width: 100%;
+  padding: 12px 14px;
+}
+
+.experience-timeline.horizontal .t-title,
+.experience-timeline.horizontal .t-col.small .t-title {
+  color: var(--paper);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.experience-timeline.horizontal .t-subtitle,
+.experience-timeline.horizontal .t-col.small .t-subtitle {
+  font-size: 0.7rem;
+}
+
+.experience-timeline.horizontal .t-org,
+.experience-timeline.horizontal .t-col.small .t-org {
+  margin-top: 6px;
+  font-size: 0.56rem;
+}
+
+.experience-timeline.horizontal .t-more,
+.experience-timeline.horizontal .t-col.small .t-more {
+  margin-top: 11px;
+  padding: 6px 12px;
+  font-size: 0.54rem;
+}
+
+.experience-timeline.horizontal .t-col:not(.current) .t-dates {
+  font-size: 0.52rem;
+}
+
+.experience-timeline.horizontal .t-col:not(.current) .t-title {
+  color: color-mix(in srgb, var(--paper) 68%, var(--muted));
+  font-size: 0.76rem;
+  font-weight: 500;
+}
+
+.experience-timeline.horizontal .t-col:not(.current) .t-subtitle {
+  font-size: 0.6rem;
+}
+
+.experience-timeline.horizontal .t-col:not(.current) .t-org {
+  font-size: 0.49rem;
+}
+
+.experience-timeline.horizontal .t-col:not(.current) .t-more {
+  font-size: 0.47rem;
+  padding: 5px 10px;
+}
+
+.experience-timeline .t-item.current[data-lit] .t-card {
+  box-shadow: 0 0 0 1px rgba(139, 124, 255, 0.12), 0 8px 24px rgba(139, 124, 255, 0.08);
+}
+
 /* ============================================================
    Timeline — details modal
    ============================================================ */
@@ -745,7 +925,6 @@ body {
   justify-content: center;
   padding: 24px;
   background: rgba(6, 6, 12, 0.66);
-  backdrop-filter: blur(4px);
   animation: overlay-in 0.25s ease;
 }
 
@@ -874,31 +1053,36 @@ body {
    ============================================================ */
 .skill-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
 .skill-category {
+  position: relative;
+  overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(16, 16, 29, 0.66);
-  padding: 20px;
-  transition: border-color 0.35s ease, transform 0.35s ease;
+  border-radius: 10px;
+  background:
+    radial-gradient(260px circle at 100% 0%, rgba(139, 124, 255, 0.08), transparent 56%),
+    rgba(16, 16, 29, 0.66);
+  padding: 20px 21px 22px;
 }
 
-.skill-category:hover {
-  border-color: var(--line-strong);
-  transform: translateY(-3px);
+.skill-category-wide {
+  grid-column: 1 / -1;
+}
+
+.skill-category-head {
+  margin-bottom: 20px;
 }
 
 .skill-category-name {
   font-family: var(--font-mono);
-  font-size: 0.64rem;
+  font-size: 0.66rem;
   font-weight: 500;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 14px;
+  color: var(--violet);
 }
 
 .chips {
@@ -908,20 +1092,26 @@ body {
 }
 
 .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.67rem;
   letter-spacing: 0.04em;
   border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  padding: 5px 12px;
-  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+  border-radius: 6px;
+  padding: 6px 10px;
+  background: rgba(10, 10, 19, 0.38);
+  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease,
+    transform 0.25s ease;
   cursor: default;
 }
 
 .chip:hover {
   border-color: var(--accent);
-  background: var(--accent);
-  color: var(--ink);
+  background: var(--accent-soft);
+  color: var(--paper);
+  transform: translateY(-2px);
 }
 
 /* ============================================================
@@ -1058,6 +1248,10 @@ body {
     display: none;
   }
 
+  .education-grid {
+    grid-template-columns: 1fr;
+  }
+
   .timeline.vertical .t-meta {
     flex-direction: column;
     gap: 2px;
@@ -1085,6 +1279,16 @@ body {
   }
 }
 
+@media (max-width: 560px) {
+  .skill-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-category-wide {
+    grid-column: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1105,4 +1309,5 @@ body {
   .t-line-fill {
     transition: none;
   }
+
 }
