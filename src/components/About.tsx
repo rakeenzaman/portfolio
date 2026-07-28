@@ -1,14 +1,19 @@
 import { aboutMe, contactEmail, githubUrl } from '../data'
 import { AtIcon, GithubIcon } from './Icons'
 
-export default function About({ onEmailCopied }: { onEmailCopied: () => void }) {
+interface AboutProps {
+  focused: boolean
+  onEmailCopied: () => void
+}
+
+export default function About({ focused, onEmailCopied }: AboutProps) {
   const emailClicked = () => {
     navigator.clipboard.writeText(contactEmail)
     onEmailCopied()
   }
 
   return (
-    <section className="section" id="about">
+    <section className={`section ${focused ? 'is-focused' : ''}`} id="about">
       <div className="section-head" data-reveal>
         <span className="section-num">01</span>
         <h2 className="section-title">About Me</h2>

@@ -1,7 +1,7 @@
-import { ChevronsIcon } from './Icons'
-
 const INTRO = ['H', 'i', ',', ' ', 'I', "'", 'm', ' ']
 const NAME = ['R', 'a', 'k', 'e', 'e', 'n', '.']
+const INTRO_DELAY_MS = 1000
+const LETTER_STAGGER_MS = 95
 
 // violet -> blue, interpolated per letter across the name
 const lerpColor = (t: number) => {
@@ -9,16 +9,21 @@ const lerpColor = (t: number) => {
   return `rgb(${c(139, 90)}, ${c(124, 200)}, ${c(255, 255)})`
 }
 
-export default function Hero({ atTop }: { atTop: boolean }) {
+interface HeroProps {
+  introComplete: boolean
+  onIntroComplete: () => void
+}
+
+export default function Hero({ introComplete, onIntroComplete }: HeroProps) {
   return (
-    <header className="hero">
+    <header className={`hero ${introComplete ? 'intro-complete' : ''}`}>
       <h1 className="hero-title" aria-label="Hi, I'm Rakeen.">
         {INTRO.map((letter, i) => (
           <span
             key={`i${i}`}
             aria-hidden="true"
             className={`hero-letter ${letter === ' ' ? 'space' : ''}`}
-            style={{ animationDelay: `${120 + i * 45}ms` }}
+            style={{ animationDelay: `${INTRO_DELAY_MS + i * LETTER_STAGGER_MS}ms` }}
           >
             {letter === ' ' ? ' ' : letter}
           </span>
@@ -29,20 +34,15 @@ export default function Hero({ atTop }: { atTop: boolean }) {
             aria-hidden="true"
             className="hero-letter"
             style={{
-              animationDelay: `${120 + (INTRO.length + i) * 45}ms`,
+              animationDelay: `${INTRO_DELAY_MS + (INTRO.length + i) * LETTER_STAGGER_MS}ms`,
               color: lerpColor(i / (NAME.length - 1)),
             }}
+            onAnimationEnd={i === NAME.length - 1 ? onIntroComplete : undefined}
           >
             {letter}
           </span>
         ))}
       </h1>
-
-      <div className={`scroll-cue ${atTop ? 'visible' : ''}`}>
-        <ChevronsIcon />
-        Scroll Down
-        <ChevronsIcon />
-      </div>
     </header>
   )
 }

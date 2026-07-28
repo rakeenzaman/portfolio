@@ -47,9 +47,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   )
 }
 
-export default function Projects() {
+export default function Projects({ focused }: { focused: boolean }) {
   return (
-    <section className="section" id="projects">
+    <section className={`section ${focused ? 'is-focused' : ''}`} id="projects">
       <div className="section-head" data-reveal>
         <span className="section-num">05</span>
         <h2 className="section-title">Projects</h2>

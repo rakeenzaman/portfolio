@@ -5,7 +5,7 @@ import { useEffect } from 'react'
  * An attribute (not a class) so React re-renders that rewrite className don't erase it.
  * Elements can set --reveal-delay via data-delay (ms) for stagger.
  */
-export function useReveal() {
+export function useReveal(refreshKey?: unknown) {
   useEffect(() => {
     const els = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'))
     const observer = new IntersectionObserver(
@@ -25,5 +25,5 @@ export function useReveal() {
       observer.observe(el)
     })
     return () => observer.disconnect()
-  }, [])
+  }, [refreshKey])
 }

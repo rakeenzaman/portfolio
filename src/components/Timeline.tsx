@@ -263,7 +263,7 @@ function TimelineTrack({
   )
 }
 
-export default function Timeline() {
+export default function Timeline({ focusedSection }: { focusedSection: string }) {
   const mobile = useIsMobile()
   const [active, setActive] = useState<TimelineEntry | null>(null)
   const experience = timeline.filter((entry) => entry.kind === 'work')
@@ -271,7 +271,10 @@ export default function Timeline() {
 
   return (
     <>
-      <section className="section" id="education">
+      <section
+        className={`section ${focusedSection === 'education' ? 'is-focused' : ''}`}
+        id="education"
+      >
         <div className="section-head" data-reveal>
           <span className="section-num">02</span>
           <h2 className="section-title">Education</h2>
@@ -279,7 +282,10 @@ export default function Timeline() {
         <EducationGrid entries={education} />
       </section>
 
-      <section className="section" id="experience">
+      <section
+        className={`section ${focusedSection === 'experience' ? 'is-focused' : ''}`}
+        id="experience"
+      >
         <div className="section-head" data-reveal>
           <span className="section-num">03</span>
           <h2 className="section-title">Experience</h2>

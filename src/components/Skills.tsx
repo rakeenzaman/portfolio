@@ -1,8 +1,8 @@
 import { skillCategories } from '../data'
 
-export default function Skills() {
+export default function Skills({ focused }: { focused: boolean }) {
   return (
-    <section className="section" id="skills">
+    <section className={`section ${focused ? 'is-focused' : ''}`} id="skills">
       <div className="section-head" data-reveal>
         <span className="section-num">04</span>
         <h2 className="section-title">Skills</h2>

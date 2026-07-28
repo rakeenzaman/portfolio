@@ -104,6 +104,11 @@ body {
   justify-content: center;
   align-items: flex-start;
   position: relative;
+  transition: min-height 1.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero.intro-complete {
+  min-height: clamp(260px, 42svh, 390px);
 }
 
 .hero-title {
@@ -121,7 +126,7 @@ body {
   opacity: 0;
   transform: translateY(0.55em);
   filter: blur(6px);
-  animation: letter-rise 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: letter-rise 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .hero-letter.space {
@@ -134,41 +139,6 @@ body {
     transform: translateY(0);
     filter: blur(0);
   }
-}
-
-.scroll-cue {
-  position: absolute;
-  bottom: 36px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--muted);
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.5s ease 0s;
-  pointer-events: none;
-}
-
-.scroll-cue.visible {
-  opacity: 1;
-  transition-delay: 1.5s;
-}
-
-.scroll-cue svg {
-  width: 11px;
-  height: 11px;
-  animation: cue-bob 1.8s ease-in-out infinite;
-}
-
-@keyframes cue-bob {
-  0%, 100% { transform: translateY(-2px); }
-  50%      { transform: translateY(3px); }
 }
 
 /* ============================================================
@@ -250,8 +220,18 @@ body {
 /* ============================================================
    Sections
    ============================================================ */
+.site-content-shell {
+  width: 100%;
+}
+
 .section {
   padding-top: clamp(64px, 11vh, 120px);
+  position: relative;
+  isolation: isolate;
+}
+
+.site-content > .section:first-child {
+  padding-top: clamp(24px, 4vh, 44px);
 }
 
 .section-head {
@@ -261,21 +241,53 @@ body {
   border-bottom: 1px solid var(--line-strong);
   padding-bottom: 12px;
   margin-bottom: 28px;
+  position: relative;
+  transition:
+    border-color 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    margin-bottom 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--section-gradient, var(--gradient));
+  box-shadow: 0 0 18px rgba(var(--section-focus-rgb, 139, 124, 255), 0.55);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .section-num {
+  display: inline-block;
   font-family: var(--font-mono);
   font-size: 0.7rem;
   color: var(--accent);
   letter-spacing: 0.1em;
+  transform-origin: left center;
+  transition:
+    color 0.65s ease,
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    text-shadow 0.65s ease;
 }
 
 .section-title {
+  display: inline-block;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(1.5rem, 3.4vw, 2.2rem);
   letter-spacing: -0.02em;
   line-height: 1.1;
+  transform-origin: left center;
+  transition:
+    color 0.65s ease,
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    letter-spacing 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    text-shadow 0.65s ease;
 }
 
 /* Scroll reveal */
@@ -1192,6 +1204,334 @@ body {
 }
 
 /* ============================================================
+   Viewport focus — the section crossing the viewport center
+   ============================================================ */
+#about {
+  --section-focus: #a99cff;
+  --section-focus-rgb: 169, 156, 255;
+  --section-gradient: linear-gradient(90deg, #8b7cff, #5ac8ff);
+}
+
+#education {
+  --section-focus: #69d2ff;
+  --section-focus-rgb: 90, 200, 255;
+  --section-gradient: linear-gradient(90deg, #5ac8ff, #8ee8ff);
+}
+
+#experience {
+  --section-focus: #a58fff;
+  --section-focus-rgb: 139, 124, 255;
+  --section-gradient: linear-gradient(90deg, #8b7cff, #c08cff);
+}
+
+#skills {
+  --section-focus: #cb9cff;
+  --section-focus-rgb: 192, 140, 255;
+  --section-gradient: linear-gradient(90deg, #b178ff, #e39cff);
+}
+
+#projects {
+  --section-focus: #6bd6ff;
+  --section-focus-rgb: 90, 200, 255;
+  --section-gradient: linear-gradient(90deg, #5ac8ff, #78a7ff);
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -26px -6vw -34px;
+  background: linear-gradient(
+    105deg,
+    transparent 4%,
+    rgba(var(--section-focus-rgb), 0.085) 30%,
+    rgba(var(--section-focus-rgb), 0.06) 68%,
+    transparent 96%
+  );
+  filter: blur(36px);
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
+  transition:
+    opacity 0.75s ease,
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section.is-focused::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.section.is-focused .section-head {
+  border-color: rgba(var(--section-focus-rgb), 0.4);
+  margin-bottom: 34px;
+}
+
+.section.is-focused .section-head::after {
+  transform: scaleX(1);
+}
+
+.section.is-focused .section-title {
+  color: var(--section-focus);
+  letter-spacing: -0.045em;
+  text-shadow: 0 0 28px rgba(var(--section-focus-rgb), 0.25);
+  transform: translateX(7px) scale(1.16);
+}
+
+.section.is-focused .section-num {
+  color: var(--section-focus);
+  text-shadow: 0 0 18px rgba(var(--section-focus-rgb), 0.75);
+  transform: translate(-3px, -3px) scale(1.2);
+}
+
+/* About: the copy leans toward the reader. */
+#about .about-text {
+  transform-origin: left center;
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    color 0.65s ease,
+    text-shadow 0.65s ease;
+}
+
+#about.is-focused .about-text[data-revealed] {
+  color: #f4f4ff;
+  text-shadow: 0 10px 34px rgba(139, 124, 255, 0.14);
+  transform: translateX(10px) scale(1.035);
+}
+
+#about.is-focused .btn-row[data-revealed] {
+  transform: translate(10px, -3px);
+}
+
+#about.is-focused .btn.primary {
+  box-shadow: 0 10px 30px rgba(139, 124, 255, 0.3);
+}
+
+/* Education: the two cards open out like a pair of pages. */
+#education .education-card,
+#education .education-card-icon {
+  transform-origin: center;
+}
+
+#education .education-card-icon {
+  transition:
+    border-color 0.45s ease,
+    color 0.45s ease,
+    box-shadow 0.65s ease,
+    width 0.35s ease,
+    height 0.35s ease,
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#education .education-card .t-title {
+  display: inline-block;
+  transform-origin: left center;
+  transition:
+    color 0.6s ease,
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#education.is-focused .education-card[data-revealed]:first-child {
+  transform: translate(-8px, -9px);
+}
+
+#education.is-focused .education-card[data-revealed]:last-child {
+  transform: translate(8px, -9px);
+  transition-delay: 70ms;
+}
+
+#education.is-focused .education-card .t-card {
+  border-color: rgba(90, 200, 255, 0.42);
+  box-shadow:
+    0 0 0 1px rgba(90, 200, 255, 0.16),
+    0 18px 42px rgba(90, 200, 255, 0.16);
+}
+
+#education.is-focused .education-card-icon {
+  color: #8ee8ff;
+  box-shadow: 0 0 28px rgba(90, 200, 255, 0.65);
+  transform: rotate(-8deg) scale(1.12);
+}
+
+#education.is-focused .education-card .t-title {
+  color: #f4fbff;
+  transform: scale(1.07);
+}
+
+/* Experience: the timeline charges up in a short wave. */
+#experience .experience-timeline .t-item {
+  transform-origin: center bottom;
+  transition:
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.6s ease;
+}
+
+#experience .experience-timeline .t-title {
+  display: inline-block;
+  transform-origin: left center;
+  transition:
+    color 0.55s ease,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#experience .experience-timeline .t-line-fill {
+  transition:
+    box-shadow 0.65s ease,
+    filter 0.65s ease;
+}
+
+#experience.is-focused .experience-timeline .t-item {
+  filter: brightness(1.08);
+  transform: translateY(-7px);
+}
+
+#experience.is-focused .experience-timeline .t-item:nth-child(4) {
+  transition-delay: 65ms;
+}
+
+#experience.is-focused .experience-timeline .t-item:nth-child(5) {
+  transition-delay: 130ms;
+}
+
+#experience.is-focused .experience-timeline .t-item.current {
+  transform: translateY(-10px);
+}
+
+#experience.is-focused .experience-timeline .t-title {
+  color: #f3efff;
+  transform: scale(1.045);
+}
+
+#experience.is-focused .experience-timeline .t-line-fill {
+  filter: brightness(1.35) saturate(1.2);
+  box-shadow:
+    0 0 12px rgba(139, 124, 255, 0.8),
+    0 0 28px rgba(90, 200, 255, 0.42);
+}
+
+/* Skills: categories lift while their chips bloom in a stagger. */
+#skills .skill-category {
+  transform-origin: center;
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    border-color 0.65s ease,
+    box-shadow 0.7s ease;
+}
+
+#skills .skill-category-name {
+  display: inline-block;
+  transform-origin: left center;
+  transition:
+    color 0.55s ease,
+    letter-spacing 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#skills .chip {
+  transform-origin: center;
+  transition:
+    border-color 0.45s ease,
+    background 0.45s ease,
+    color 0.45s ease,
+    box-shadow 0.45s ease,
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#skills.is-focused .skill-category[data-revealed] {
+  border-color: rgba(192, 140, 255, 0.34);
+  box-shadow: 0 16px 42px rgba(139, 124, 255, 0.12);
+  transform: translateY(-7px);
+}
+
+#skills.is-focused .skill-category[data-revealed]:nth-child(2) {
+  transform: translate(-4px, -5px);
+}
+
+#skills.is-focused .skill-category[data-revealed]:nth-child(3) {
+  transform: translate(4px, -5px);
+}
+
+#skills.is-focused .skill-category-name {
+  color: #ddaaff;
+  letter-spacing: 0.22em;
+  transform: scale(1.07);
+}
+
+#skills.is-focused .chip {
+  color: #f2eaff;
+  border-color: rgba(192, 140, 255, 0.46);
+  background: rgba(139, 124, 255, 0.12);
+  box-shadow: 0 7px 18px rgba(139, 124, 255, 0.1);
+  transform: translateY(-3px) scale(1.055);
+}
+
+#skills.is-focused .chip:nth-child(3n + 2) {
+  transition-delay: 55ms;
+}
+
+#skills.is-focused .chip:nth-child(3n) {
+  transition-delay: 110ms;
+}
+
+#skills.is-focused .chip:hover {
+  transform: translateY(-6px) scale(1.075);
+}
+
+/* Projects: cards fan toward the viewer and expose their ambient light. */
+#projects .project-grid {
+  perspective: 1000px;
+}
+
+#projects .project {
+  transform-origin: center;
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    border-color 0.55s ease,
+    box-shadow 0.65s ease;
+}
+
+#projects .project-name {
+  display: inline-block;
+  transform-origin: left center;
+  transition:
+    color 0.55s ease,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#projects.is-focused .project[data-revealed]:nth-child(odd) {
+  border-color: rgba(90, 200, 255, 0.32);
+  box-shadow: 0 20px 48px rgba(90, 200, 255, 0.12);
+  transform: translate(-4px, -8px);
+}
+
+#projects.is-focused .project[data-revealed]:nth-child(even) {
+  border-color: rgba(139, 124, 255, 0.32);
+  box-shadow: 0 20px 48px rgba(139, 124, 255, 0.12);
+  transform: translate(4px, -8px);
+  transition-delay: 75ms;
+}
+
+#projects.is-focused .project::before {
+  opacity: 0.55;
+}
+
+#projects.is-focused .project-name {
+  color: #eefaff;
+  transform: scale(1.09);
+}
+
+#projects.is-focused .project[data-revealed]:hover {
+  border-color: rgba(90, 200, 255, 0.62);
+  transform: translateY(-12px);
+}
+
+/* ============================================================
    Toast
    ============================================================ */
 .toast {
@@ -1277,6 +1617,50 @@ body {
   .section {
     padding-top: 60px;
   }
+
+  .section.is-focused .section-title {
+    transform: translateX(4px) scale(1.1);
+  }
+
+  .section.is-focused .section-num {
+    transform: translate(-2px, -2px) scale(1.12);
+  }
+
+  #about.is-focused .about-text[data-revealed] {
+    transform: translateX(4px) scale(1.015);
+  }
+
+  #about.is-focused .btn-row[data-revealed] {
+    transform: translate(4px, -2px);
+  }
+
+  #education.is-focused .education-card[data-revealed]:first-child {
+    transform: translate(-3px, -5px);
+  }
+
+  #education.is-focused .education-card[data-revealed]:last-child {
+    transform: translate(3px, -5px);
+  }
+
+  #experience.is-focused .experience-timeline .t-item,
+  #experience.is-focused .experience-timeline .t-item.current {
+    transform: translateY(-4px);
+  }
+
+  #skills.is-focused .skill-category[data-revealed],
+  #skills.is-focused .skill-category[data-revealed]:nth-child(2),
+  #skills.is-focused .skill-category[data-revealed]:nth-child(3) {
+    transform: translateY(-4px);
+  }
+
+  #skills.is-focused .chip {
+    transform: translateY(-2px) scale(1.03);
+  }
+
+  #projects.is-focused .project[data-revealed]:nth-child(odd),
+  #projects.is-focused .project[data-revealed]:nth-child(even) {
+    transform: translateY(-5px);
+  }
 }
 
 @media (max-width: 560px) {
@@ -1299,6 +1683,10 @@ body {
     animation-delay: 0ms !important;
   }
 
+  .hero {
+    transition: none;
+  }
+
   [data-reveal] {
     transition: none;
     opacity: 1;
@@ -1308,6 +1696,44 @@ body {
 
   .t-line-fill {
     transition: none;
+  }
+
+  .section::before,
+  .section-head,
+  .section-head::after,
+  .section-title,
+  .section-num,
+  #about .about-text,
+  #about .btn-row,
+  #education .education-card,
+  #education .education-card-icon,
+  #education .education-card .t-title,
+  #experience .experience-timeline .t-item,
+  #experience .experience-timeline .t-title,
+  #experience .experience-timeline .t-line-fill,
+  #skills .skill-category,
+  #skills .skill-category-name,
+  #skills .chip,
+  #projects .project,
+  #projects .project-name {
+    transition: none !important;
+  }
+
+  .section.is-focused .section-title,
+  .section.is-focused .section-num,
+  #about.is-focused .about-text[data-revealed],
+  #about.is-focused .btn-row[data-revealed],
+  #education.is-focused .education-card[data-revealed],
+  #education.is-focused .education-card-icon,
+  #education.is-focused .education-card .t-title,
+  #experience.is-focused .experience-timeline .t-item,
+  #experience.is-focused .experience-timeline .t-item.current,
+  #experience.is-focused .experience-timeline .t-title,
+  #skills.is-focused .skill-category[data-revealed],
+  #skills.is-focused .chip,
+  #projects.is-focused .project[data-revealed],
+  #projects.is-focused .project-name {
+    transform: none !important;
   }
 
 }
