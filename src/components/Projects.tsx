@@ -51,7 +51,7 @@ export default function Projects({ focused }: { focused: boolean }) {
   return (
     <section className={`section ${focused ? 'is-focused' : ''}`} id="projects">
       <div className="section-head" data-reveal>
-        <span className="section-num">05</span>
+        <span className="section-num">06</span>
         <h2 className="section-title">Projects</h2>
       </div>
       <div className="project-grid">

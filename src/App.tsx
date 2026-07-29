@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { LazyMotion, domAnimation, useReducedMotion } from 'motion/react'
 import * as m from 'motion/react-m'
 import Backdrop from './components/Backdrop'
@@ -6,6 +6,7 @@ import Hero from './components/Hero'
 import Rail from './components/Rail'
 import About from './components/About'
 import Timeline from './components/Timeline'
+import WorkSystems from './components/WorkSystems'
 import Skills from './components/Skills'
 import Projects from './components/Projects'
 import Toast from './components/Toast'
@@ -16,6 +17,7 @@ const SECTIONS = [
   { id: 'about', label: 'About Me' },
   { id: 'education', label: 'Education' },
   { id: 'experience', label: 'Experience' },
+  { id: 'work', label: 'What I Build' },
   { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
 ]
@@ -25,6 +27,8 @@ const SECTION_IDS = SECTIONS.map((s) => s.id)
 export default function App() {
   const [introComplete, setIntroComplete] = useState(false)
   const [contentExpanded, setContentExpanded] = useState(false)
+  const [sectionFocusReady, setSectionFocusReady] = useState(false)
+  const [sectionLinesReady, setSectionLinesReady] = useState(false)
   const reduceMotion = useReducedMotion()
   const atTop = useAtTopOfWindow()
   const active = useActiveSection(SECTION_IDS, introComplete)
@@ -32,6 +36,24 @@ export default function App() {
 
   const [toastVisible, setToastVisible] = useState(false)
   const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+
+  useEffect(() => {
+    if (!introComplete) return
+
+    if (reduceMotion) {
+      setSectionFocusReady(true)
+      setSectionLinesReady(true)
+      return
+    }
+
+    const focusTimer = window.setTimeout(() => setSectionFocusReady(true), 120)
+    const lineTimer = window.setTimeout(() => setSectionLinesReady(true), 500)
+
+    return () => {
+      window.clearTimeout(focusTimer)
+      window.clearTimeout(lineTimer)
+    }
+  }, [introComplete, reduceMotion])
 
   const showToast = useCallback(() => {
     setToastVisible(true)
@@ -61,7 +83,9 @@ export default function App() {
               onAnimationComplete={() => setContentExpanded(true)}
             >
               <m.div
-                className="site-content"
+                className={`site-content ${contentExpanded ? 'content-expanded' : ''} ${
+                  sectionLinesReady ? 'section-lines-ready' : ''
+                }`}
                 initial={
                   reduceMotion
                     ? false
@@ -74,10 +98,14 @@ export default function App() {
                   ease: [0.16, 1, 0.3, 1],
                 }}
               >
-                <About focused={active === 'about'} onEmailCopied={showToast} />
-                <Timeline focusedSection={active} />
-                <Skills focused={active === 'skills'} />
-                <Projects focused={active === 'projects'} />
+                <About
+                  focused={sectionFocusReady && active === 'about'}
+                  onEmailCopied={showToast}
+                />
+                <Timeline focusedSection={sectionFocusReady ? active : ''} />
+                <WorkSystems focused={sectionFocusReady && active === 'work'} />
+                <Skills focused={sectionFocusReady && active === 'skills'} />
+                <Projects focused={sectionFocusReady && active === 'projects'} />
               </m.div>
             </m.div>
           </LazyMotion>

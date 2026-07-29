@@ -112,6 +112,9 @@ body {
 }
 
 .hero-title {
+  --hero-rest-scale: 0.68;
+  position: relative;
+  left: 50%;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(2.7rem, 9vw, 7rem);
@@ -119,6 +122,16 @@ body {
   letter-spacing: -0.035em;
   display: flex;
   flex-wrap: wrap;
+  transform: translateX(-50%) scale(1);
+  transform-origin: left center;
+  transition:
+    left 1.25s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero.intro-complete .hero-title {
+  left: 0;
+  transform: translateX(0) scale(var(--hero-rest-scale));
 }
 
 .hero-letter {
@@ -441,6 +454,7 @@ body {
 .t-line-fill {
   position: absolute;
   border-radius: 2px;
+  z-index: 0;
 }
 
 .t-line {
@@ -492,10 +506,16 @@ body {
 .t-item.current[data-lit] .t-dot::after {
   content: '';
   position: absolute;
+  z-index: 4;
   inset: -2px;
   border-radius: 50%;
   border: 2px solid var(--violet);
   animation: ring 1.8s ease-out infinite;
+}
+
+.t-item.current[data-lit] .t-dot {
+  z-index: 3;
+  isolation: isolate;
 }
 
 @keyframes ring {
@@ -1061,6 +1081,225 @@ body {
 }
 
 /* ============================================================
+   What I build at work
+   ============================================================ */
+.work-intro {
+  max-width: 76ch;
+  margin-bottom: 24px;
+  padding-left: 17px;
+  border-left: 2px solid var(--line-strong);
+  color: color-mix(in srgb, var(--paper) 84%, var(--muted));
+  font-size: clamp(0.94rem, 1.35vw, 1.06rem);
+  line-height: 1.7;
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    border-color 0.65s ease,
+    color 0.65s ease,
+    text-shadow 0.65s ease;
+}
+
+.work-system-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas:
+    'angular next'
+    'spring extras';
+  gap: 14px;
+}
+
+.work-system:nth-child(1) {
+  grid-area: angular;
+}
+
+.work-system:nth-child(2) {
+  grid-area: spring;
+}
+
+.work-system:nth-child(3) {
+  grid-area: next;
+}
+
+.work-system {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background:
+    radial-gradient(280px circle at 100% 0%, rgba(90, 200, 255, 0.055), transparent 60%),
+    rgba(16, 16, 29, 0.68);
+  padding: 20px 21px 21px;
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    border-color 0.65s ease,
+    box-shadow 0.7s ease;
+}
+
+.work-system::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--violet), var(--blue));
+  box-shadow: 0 0 16px rgba(90, 200, 255, 0.48);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.work-system::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(139, 124, 255, 0.06),
+    transparent 45%,
+    rgba(90, 200, 255, 0.055)
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+
+.work-system > * {
+  position: relative;
+  z-index: 1;
+}
+
+.work-system-topline {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.work-system-index,
+.work-system-kind {
+  font-family: var(--font-mono);
+  font-size: 0.57rem;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.work-system-index {
+  color: var(--blue);
+}
+
+.work-system-kind {
+  color: var(--muted);
+  text-align: right;
+}
+
+.work-system-name {
+  display: inline-block;
+  width: fit-content;
+  margin-bottom: 8px;
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: 1.18rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  transform-origin: left center;
+  transition:
+    color 0.55s ease,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    text-shadow 0.55s ease;
+}
+
+.work-system-description {
+  color: color-mix(in srgb, var(--paper) 76%, var(--muted));
+  font-size: 0.84rem;
+  line-height: 1.62;
+}
+
+.work-area-examples {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 9px;
+  margin-top: 16px;
+  padding: 14px 0 0 14px;
+  border-top: 1px solid var(--line);
+  color: color-mix(in srgb, var(--paper) 72%, var(--muted));
+  font-size: 0.73rem;
+  line-height: 1.55;
+  transition: border-color 0.55s ease;
+}
+
+.work-area-examples li::marker {
+  color: var(--blue);
+}
+
+.work-footnotes {
+  grid-area: extras;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+}
+
+.work-footnote {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 9px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 12px 13px 13px;
+  background: rgba(16, 16, 29, 0.48);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    border-color 0.55s ease,
+    background 0.55s ease,
+    box-shadow 0.55s ease;
+}
+
+.work-footnote-mark {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1;
+  transform-origin: center;
+  transition:
+    color 0.5s ease,
+    text-shadow 0.5s ease,
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.work-footnote-name {
+  margin-bottom: 5px;
+  color: color-mix(in srgb, var(--paper) 86%, var(--muted));
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.5s ease;
+}
+
+.work-footnote-description {
+  color: var(--muted);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+/* ============================================================
    Skills
    ============================================================ */
 .skill-grid {
@@ -1095,6 +1334,39 @@ body {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--violet);
+}
+
+.skill-category-ai {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 32px;
+  align-items: center;
+  background:
+    radial-gradient(360px circle at 88% 50%, rgba(90, 200, 255, 0.1), transparent 62%),
+    radial-gradient(300px circle at 12% 20%, rgba(139, 124, 255, 0.1), transparent 64%),
+    rgba(16, 16, 29, 0.72);
+}
+
+.skill-category-ai .skill-category-head {
+  margin-bottom: 8px;
+}
+
+.skill-category-desc {
+  max-width: 64ch;
+  color: color-mix(in srgb, var(--paper) 78%, var(--muted));
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.skill-category-ai .chips {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  justify-content: flex-end;
+}
+
+.skill-category-ai .chip {
+  padding: 9px 14px;
+  color: var(--paper);
 }
 
 .chips {
@@ -1224,6 +1496,12 @@ body {
   --section-gradient: linear-gradient(90deg, #8b7cff, #c08cff);
 }
 
+#work {
+  --section-focus: #72dfd0;
+  --section-focus-rgb: 114, 223, 208;
+  --section-gradient: linear-gradient(90deg, #65d8c7, #5ac8ff);
+}
+
 #skills {
   --section-focus: #cb9cff;
   --section-focus-rgb: 192, 140, 255;
@@ -1240,7 +1518,10 @@ body {
   content: '';
   position: absolute;
   z-index: -1;
-  inset: -26px -6vw -34px;
+  top: calc(clamp(64px, 11vh, 120px) - 10px);
+  right: -6vw;
+  bottom: -12px;
+  left: -6vw;
   background: linear-gradient(
     105deg,
     transparent 4%,
@@ -1248,7 +1529,7 @@ body {
     rgba(var(--section-focus-rgb), 0.06) 68%,
     transparent 96%
   );
-  filter: blur(36px);
+  filter: blur(22px);
   opacity: 0;
   transform: scale(0.9);
   pointer-events: none;
@@ -1257,7 +1538,11 @@ body {
     transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.section.is-focused::before {
+.site-content > .section:first-child::before {
+  top: calc(clamp(24px, 4vh, 44px) - 10px);
+}
+
+.site-content.content-expanded .section.is-focused::before {
   opacity: 1;
   transform: scale(1);
 }
@@ -1267,7 +1552,7 @@ body {
   margin-bottom: 34px;
 }
 
-.section.is-focused .section-head::after {
+.site-content.section-lines-ready .section.is-focused .section-head::after {
   transform: scaleX(1);
 }
 
@@ -1361,9 +1646,11 @@ body {
 }
 
 /* Experience: the timeline charges up in a short wave. */
-#experience .experience-timeline .t-item {
+#experience .experience-timeline .t-card {
   transform-origin: center bottom;
   transition:
+    border-color 0.4s ease,
+    box-shadow 0.4s ease,
     transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
     filter 0.6s ease;
 }
@@ -1382,21 +1669,21 @@ body {
     filter 0.65s ease;
 }
 
-#experience.is-focused .experience-timeline .t-item {
+#experience.is-focused .experience-timeline .t-card {
   filter: brightness(1.08);
-  transform: translateY(-7px);
+  transform: scale(1.015);
 }
 
-#experience.is-focused .experience-timeline .t-item:nth-child(4) {
+#experience.is-focused .experience-timeline .t-item:nth-child(4) .t-card {
   transition-delay: 65ms;
 }
 
-#experience.is-focused .experience-timeline .t-item:nth-child(5) {
+#experience.is-focused .experience-timeline .t-item:nth-child(5) .t-card {
   transition-delay: 130ms;
 }
 
-#experience.is-focused .experience-timeline .t-item.current {
-  transform: translateY(-10px);
+#experience.is-focused .experience-timeline .t-item.current .t-card {
+  transform: scale(1.025);
 }
 
 #experience.is-focused .experience-timeline .t-title {
@@ -1409,6 +1696,96 @@ body {
   box-shadow:
     0 0 12px rgba(139, 124, 255, 0.8),
     0 0 28px rgba(90, 200, 255, 0.42);
+}
+
+/* What I build: each application comes online in sequence. */
+#work .work-system-index {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+#work .work-system-index::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--muted);
+  opacity: 0.6;
+  transition:
+    background 0.5s ease,
+    box-shadow 0.5s ease,
+    opacity 0.5s ease,
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#work.is-focused .work-intro {
+  border-color: rgba(114, 223, 208, 0.7);
+  color: #effffc;
+  text-shadow: 0 10px 30px rgba(90, 200, 255, 0.1);
+}
+
+#work.is-focused .work-system[data-revealed] {
+  border-color: rgba(114, 223, 208, 0.3);
+  box-shadow: 0 15px 38px rgba(68, 184, 177, 0.1);
+}
+
+#work.is-focused .work-system::before {
+  transform: scaleX(1);
+}
+
+#work.is-focused .work-system:nth-child(2)::before {
+  transition-delay: 70ms;
+}
+
+#work.is-focused .work-system:nth-child(3)::before {
+  transition-delay: 140ms;
+}
+
+#work.is-focused .work-system::after {
+  opacity: 1;
+}
+
+#work.is-focused .work-system-index::before {
+  background: #72dfd0;
+  box-shadow: 0 0 12px rgba(114, 223, 208, 0.8);
+  opacity: 1;
+  transform: scale(1.35);
+}
+
+#work.is-focused .work-system-name {
+  color: #effffc;
+  text-shadow: 0 0 24px rgba(114, 223, 208, 0.18);
+  transform: scale(1.055);
+}
+
+#work.is-focused .work-area-examples {
+  border-color: rgba(114, 223, 208, 0.2);
+}
+
+#work.is-focused .work-footnote[data-revealed] {
+  border-color: rgba(114, 223, 208, 0.2);
+  background: rgba(45, 105, 101, 0.08);
+  box-shadow: 0 8px 22px rgba(68, 184, 177, 0.06);
+}
+
+#work.is-focused .work-footnote-mark {
+  color: #72dfd0;
+  text-shadow: 0 0 11px rgba(114, 223, 208, 0.75);
+  transform: scale(1.25);
+}
+
+#work.is-focused .work-footnote-name {
+  color: #dffbf6;
+}
+
+#work.is-focused .work-footnote:nth-child(2) {
+  transition-delay: 55ms;
+}
+
+#work.is-focused .work-footnote:nth-child(3) {
+  transition-delay: 110ms;
 }
 
 /* Skills: categories lift while their chips bloom in a stagger. */
@@ -1441,18 +1818,13 @@ body {
     transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+#skills .chips {
+  transition: gap 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 #skills.is-focused .skill-category[data-revealed] {
   border-color: rgba(192, 140, 255, 0.34);
   box-shadow: 0 16px 42px rgba(139, 124, 255, 0.12);
-  transform: translateY(-7px);
-}
-
-#skills.is-focused .skill-category[data-revealed]:nth-child(2) {
-  transform: translate(-4px, -5px);
-}
-
-#skills.is-focused .skill-category[data-revealed]:nth-child(3) {
-  transform: translate(4px, -5px);
 }
 
 #skills.is-focused .skill-category-name {
@@ -1466,7 +1838,11 @@ body {
   border-color: rgba(192, 140, 255, 0.46);
   background: rgba(139, 124, 255, 0.12);
   box-shadow: 0 7px 18px rgba(139, 124, 255, 0.1);
-  transform: translateY(-3px) scale(1.055);
+  transform: translateY(-3px) scale(1.035);
+}
+
+#skills.is-focused .chips {
+  gap: 11px;
 }
 
 #skills.is-focused .chip:nth-child(3n + 2) {
@@ -1478,7 +1854,7 @@ body {
 }
 
 #skills.is-focused .chip:hover {
-  transform: translateY(-6px) scale(1.075);
+  transform: translateY(-6px) scale(1.055);
 }
 
 /* Projects: cards fan toward the viewer and expose their ambient light. */
@@ -1592,6 +1968,19 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .work-system-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'angular'
+      'spring'
+      'next'
+      'extras';
+  }
+
+  .work-footnotes {
+    grid-template-columns: 1fr;
+  }
+
   .timeline.vertical .t-meta {
     flex-direction: column;
     gap: 2px;
@@ -1618,6 +2007,10 @@ body {
     padding-top: 60px;
   }
 
+  .hero-title {
+    --hero-rest-scale: 0.76;
+  }
+
   .section.is-focused .section-title {
     transform: translateX(4px) scale(1.1);
   }
@@ -1642,15 +2035,9 @@ body {
     transform: translate(3px, -5px);
   }
 
-  #experience.is-focused .experience-timeline .t-item,
-  #experience.is-focused .experience-timeline .t-item.current {
-    transform: translateY(-4px);
-  }
-
-  #skills.is-focused .skill-category[data-revealed],
-  #skills.is-focused .skill-category[data-revealed]:nth-child(2),
-  #skills.is-focused .skill-category[data-revealed]:nth-child(3) {
-    transform: translateY(-4px);
+  #experience.is-focused .experience-timeline .t-card,
+  #experience.is-focused .experience-timeline .t-item.current .t-card {
+    transform: scale(1.008);
   }
 
   #skills.is-focused .chip {
@@ -1668,8 +2055,13 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .skill-category-wide {
-    grid-column: auto;
+  .skill-category-ai {
+    display: block;
+  }
+
+  .skill-category-ai .chips {
+    margin-top: 18px;
+    justify-content: flex-start;
   }
 }
 
@@ -1684,6 +2076,10 @@ body {
   }
 
   .hero {
+    transition: none;
+  }
+
+  .hero-title {
     transition: none;
   }
 
@@ -1708,9 +2104,20 @@ body {
   #education .education-card,
   #education .education-card-icon,
   #education .education-card .t-title,
-  #experience .experience-timeline .t-item,
+  #experience .experience-timeline .t-card,
   #experience .experience-timeline .t-title,
   #experience .experience-timeline .t-line-fill,
+  #work .work-intro,
+  #work .work-system,
+  #work .work-system::before,
+  #work .work-system::after,
+  #work .work-system-index::before,
+  #work .work-system-name,
+  #work .work-area-examples,
+  #work .work-footnotes,
+  #work .work-footnote,
+  #work .work-footnote-mark,
+  #work .work-footnote-name,
   #skills .skill-category,
   #skills .skill-category-name,
   #skills .chip,
@@ -1726,9 +2133,12 @@ body {
   #education.is-focused .education-card[data-revealed],
   #education.is-focused .education-card-icon,
   #education.is-focused .education-card .t-title,
-  #experience.is-focused .experience-timeline .t-item,
-  #experience.is-focused .experience-timeline .t-item.current,
+  #experience.is-focused .experience-timeline .t-card,
+  #experience.is-focused .experience-timeline .t-item.current .t-card,
   #experience.is-focused .experience-timeline .t-title,
+  #work.is-focused .work-system-name,
+  #work.is-focused .work-system-index::before,
+  #work.is-focused .work-footnote-mark,
   #skills.is-focused .skill-category[data-revealed],
   #skills.is-focused .chip,
   #projects.is-focused .project[data-revealed],
