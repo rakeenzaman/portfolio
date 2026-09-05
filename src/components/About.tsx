@@ -1,17 +1,11 @@
-import { aboutMe, contactEmail, githubUrl } from '../data'
-import { AtIcon, GithubIcon } from './Icons'
+import { aboutMe, githubUrl, linkedinUrl } from '../data'
+import { GithubIcon, LinkedInIcon } from './Icons'
 
 interface AboutProps {
   focused: boolean
-  onEmailCopied: () => void
 }
 
-export default function About({ focused, onEmailCopied }: AboutProps) {
-  const emailClicked = () => {
-    navigator.clipboard.writeText(contactEmail)
-    onEmailCopied()
-  }
-
+export default function About({ focused }: AboutProps) {
   return (
     <section className={`section ${focused ? 'is-focused' : ''}`} id="about">
       <div className="section-head" data-reveal>
@@ -22,13 +16,13 @@ export default function About({ focused, onEmailCopied }: AboutProps) {
         {aboutMe}
       </p>
       <div className="btn-row" data-reveal data-delay="200">
-        <button className="btn primary" onClick={emailClicked}>
-          <AtIcon />
-          Contact Me
-        </button>
-        <a className="btn" href={githubUrl} target="_blank" rel="noreferrer">
+        <a className="btn primary" href={githubUrl} target="_blank" rel="noreferrer">
           <GithubIcon />
           GitHub
+        </a>
+        <a className="btn" href={linkedinUrl} target="_blank" rel="noreferrer">
+          <LinkedInIcon />
+          LinkedIn
         </a>
       </div>
     </section>

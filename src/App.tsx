@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { LazyMotion, domAnimation, useReducedMotion } from 'motion/react'
+import { useEffect, useState } from 'react'
+import { LazyMotion, domAnimation } from 'motion/react'
 import * as m from 'motion/react-m'
 import Backdrop from './components/Backdrop'
 import Hero from './components/Hero'
@@ -9,7 +9,6 @@ import Timeline from './components/Timeline'
 import WorkSystems from './components/WorkSystems'
 import Skills from './components/Skills'
 import Projects from './components/Projects'
-import Toast from './components/Toast'
 import { useActiveSection, useAtTopOfWindow } from './hooks/useActiveSection'
 import { useReveal } from './hooks/useReveal'
 
@@ -29,22 +28,12 @@ export default function App() {
   const [contentExpanded, setContentExpanded] = useState(false)
   const [sectionFocusReady, setSectionFocusReady] = useState(false)
   const [sectionLinesReady, setSectionLinesReady] = useState(false)
-  const reduceMotion = useReducedMotion()
   const atTop = useAtTopOfWindow()
-  const active = useActiveSection(SECTION_IDS, introComplete)
+  const { active, navigateToSection } = useActiveSection(SECTION_IDS, introComplete)
   useReveal(introComplete)
-
-  const [toastVisible, setToastVisible] = useState(false)
-  const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   useEffect(() => {
     if (!introComplete) return
-
-    if (reduceMotion) {
-      setSectionFocusReady(true)
-      setSectionLinesReady(true)
-      return
-    }
 
     const focusTimer = window.setTimeout(() => setSectionFocusReady(true), 120)
     const lineTimer = window.setTimeout(() => setSectionLinesReady(true), 500)
@@ -53,19 +42,17 @@ export default function App() {
       window.clearTimeout(focusTimer)
       window.clearTimeout(lineTimer)
     }
-  }, [introComplete, reduceMotion])
-
-  const showToast = useCallback(() => {
-    setToastVisible(true)
-    clearTimeout(toastTimer.current)
-    toastTimer.current = setTimeout(() => setToastVisible(false), 5000)
-  }, [])
+  }, [introComplete])
 
   return (
     <>
       <Backdrop />
-      <Rail sections={SECTIONS} active={active} visible={!atTop} />
-      <Toast visible={toastVisible} />
+      <Rail
+        sections={SECTIONS}
+        active={active}
+        visible={!atTop}
+        onNavigate={navigateToSection}
+      />
 
       <main className="page">
         <Hero
@@ -76,9 +63,9 @@ export default function App() {
           <LazyMotion features={domAnimation} strict>
             <m.div
               className="site-content-shell"
-              initial={reduceMotion ? false : { height: 0 }}
+              initial={{ height: 0 }}
               animate={{ height: 'auto' }}
-              transition={{ duration: reduceMotion ? 0 : 1.25, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 1.25, ease: [0.16, 1, 0.3, 1] }}
               style={{ overflow: contentExpanded ? 'visible' : 'hidden' }}
               onAnimationComplete={() => setContentExpanded(true)}
             >
@@ -86,22 +73,15 @@ export default function App() {
                 className={`site-content ${contentExpanded ? 'content-expanded' : ''} ${
                   sectionLinesReady ? 'section-lines-ready' : ''
                 }`}
-                initial={
-                  reduceMotion
-                    ? false
-                    : { opacity: 0, y: 52, scale: 0.98, filter: 'blur(8px)' }
-                }
+                initial={{ opacity: 0, y: 52, scale: 0.98, filter: 'blur(8px)' }}
                 animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                 transition={{
-                  duration: reduceMotion ? 0 : 0.95,
-                  delay: reduceMotion ? 0 : 0.12,
+                  duration: 0.95,
+                  delay: 0.12,
                   ease: [0.16, 1, 0.3, 1],
                 }}
               >
-                <About
-                  focused={sectionFocusReady && active === 'about'}
-                  onEmailCopied={showToast}
-                />
+                <About focused={sectionFocusReady && active === 'about'} />
                 <Timeline focusedSection={sectionFocusReady ? active : ''} />
                 <WorkSystems focused={sectionFocusReady && active === 'work'} />
                 <Skills focused={sectionFocusReady && active === 'skills'} />

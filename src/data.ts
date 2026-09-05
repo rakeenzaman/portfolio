@@ -29,9 +29,10 @@ export interface WorkResponsibility {
 
 export interface Project {
   name: string
+  year: number
   languages: string
   description: string
-  liveDemoUrl?: string
+  repositoryUrl: string
 }
 
 export const aboutMe =
@@ -163,37 +164,45 @@ export const skillCategories: SkillCategory[] = [
 export const projects: Project[] = [
   {
     name: 'Masters Project',
+    year: 2024,
     languages: 'C++, Clang, JavaScript, CSS, HTML, Node.js',
     description:
       "Visualizes control flow of C++ code by ingesting C++ code via a web interface, generating an Abstract Syntax Tree using Clang, traversing the AST to extract control flow information, and rendering control flow graphs in the browser using D3.js and Graphviz. Created for my Master's research project at Mississippi State University.",
+    repositoryUrl: 'https://github.com/rakeenzaman/cse8080',
   },
   {
-    name: 'Video Compressor',
-    liveDemoUrl: 'will add later',
-    languages: 'Angular, TypeScript, SCSS, HTML, FFmpeg.wasm',
+    name: 'Pokemon Auction Price Scanner',
+    year: 2026,
+    languages: 'Electron, TypeScript, DINOv3, TCGdex',
     description:
-      'Compresses video files directly in the browser using FFmpeg.wasm, allowing users to drag and drop a video into the browser window, select compression settings, and download the compressed video without any server-side processing. Built with Angular.',
-  },
-  {
-    name: 'Spin The Wheel',
-    liveDemoUrl: 'will add later',
-    languages: 'Angular, TypeScript, SCSS, HTML',
-    description:
-      'A fun Angular app that allows users to create customizable spinning wheels for decision-making or games.',
+      'Detects Pokemon cards in captured livestream footage, matches them against 21,775 local DINOv3 embeddings, and retrieves current marketplace pricing through TCGdex. Built as an Electron proof of concept with region selection, motion-aware tracking, rotation handling, and CPU-based nearest-neighbor matching.',
+    repositoryUrl: 'https://github.com/rakeenzaman/pokemon-auction-price-scanner',
   },
   {
     name: 'Statify',
+    year: 2024,
     languages: 'Angular, TypeScript, SCSS, HTML, Spotify API',
     description:
       'Analyzes a user’s Spotify listening habits by connecting to the Spotify API to fetch data on their top tracks and artists. Built with Angular.',
+    repositoryUrl: 'https://github.com/rakeenzaman/Statify',
   },
   {
-    name: 'Portfolio',
+    name: 'Spin The Wheel',
+    year: 2024,
     languages: 'Angular, TypeScript, SCSS, HTML',
     description:
-      "You're looking at it! My personal portfolio website built with Angular to showcase my skills, experience, and projects.",
+      'A fun Angular app that allows users to create customizable spinning wheels for decision-making or games.',
+    repositoryUrl: 'https://github.com/rakeenzaman/SpinTheWheel',
+  },
+  {
+    name: 'Video Compressor',
+    year: 2025,
+    languages: 'Angular, TypeScript, SCSS, HTML, FFmpeg.wasm',
+    description:
+      'Compresses video files directly in the browser using FFmpeg.wasm, allowing users to drag and drop a video into the browser window, select compression settings, and download the compressed video without any server-side processing. Built with Angular.',
+    repositoryUrl: 'https://github.com/rakeenzaman/video-compressor',
   },
 ]
 
 export const githubUrl = 'https://github.com/rakeenzaman'
-export const contactEmail = 'email@email.com'
+export const linkedinUrl = 'https://www.linkedin.com/in/rakeen-zaman-1166b6358/'

@@ -196,10 +196,19 @@ body {
 }
 
 .rail-tick {
-  width: 12px;
+  position: relative;
+  width: 28px;
   height: 1px;
+}
+
+.rail-tick::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: currentColor;
-  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scaleX(0.4286);
+  transform-origin: left center;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .rail-label {
@@ -220,8 +229,8 @@ body {
   color: var(--accent);
 }
 
-.rail-item.active .rail-tick {
-  width: 28px;
+.rail-item.active .rail-tick::before {
+  transform: scaleX(1);
 }
 
 .rail-item.active .rail-label,
@@ -255,9 +264,7 @@ body {
   padding-bottom: 12px;
   margin-bottom: 28px;
   position: relative;
-  transition:
-    border-color 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    margin-bottom 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .section-head::after {
@@ -299,7 +306,6 @@ body {
   transition:
     color 0.65s ease,
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    letter-spacing 0.8s cubic-bezier(0.16, 1, 0.3, 1),
     text-shadow 0.65s ease;
 }
 
@@ -307,17 +313,14 @@ body {
 [data-reveal] {
   opacity: 0;
   transform: translateY(34px);
-  filter: blur(3px);
   transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms);
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms);
 }
 
 [data-reveal][data-revealed] {
   opacity: 1;
   transform: translateY(0);
-  filter: blur(0);
 }
 
 /* ============================================================
@@ -326,7 +329,8 @@ body {
 .about-text {
   font-size: clamp(0.98rem, 1.5vw, 1.14rem);
   line-height: 1.65;
-  max-width: 62ch;
+  width: 100%;
+  max-width: none;
   color: var(--paper);
 }
 
@@ -528,9 +532,8 @@ body {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(16, 16, 29, 0.72);
-  backdrop-filter: blur(2px);
   padding: 12px 16px;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  transition: border-color 0.4s ease;
 }
 
 .t-item[data-lit] .t-card {
@@ -610,6 +613,10 @@ body {
 .timeline.vertical .t-line-fill {
   left: 16px;
   width: 2px;
+}
+
+.timeline.vertical .t-line-fill {
+  transform-origin: center top;
 }
 
 .timeline.vertical .t-entry {
@@ -1094,7 +1101,6 @@ body {
   transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
     border-color 0.65s ease,
     color 0.65s ease,
     text-shadow 0.65s ease;
@@ -1136,9 +1142,7 @@ body {
   transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-    border-color 0.65s ease,
-    box-shadow 0.7s ease;
+    border-color 0.65s ease;
 }
 
 .work-system::before {
@@ -1263,10 +1267,8 @@ body {
   transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
     border-color 0.55s ease,
-    background 0.55s ease,
-    box-shadow 0.55s ease;
+    background 0.55s ease;
 }
 
 .work-footnote-mark {
@@ -1403,19 +1405,20 @@ body {
    ============================================================ */
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-  gap: 14px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
 }
 
 .project {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 5px;
+  font-weight: 300;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   background: rgba(16, 16, 29, 0.66);
-  padding: 20px;
+  padding: 13px 16px;
   overflow: hidden;
   transition: border-color 0.35s ease, transform 0.35s ease;
 }
@@ -1439,39 +1442,74 @@ body {
   opacity: 1;
 }
 
+.project-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.project-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  justify-content: flex-start;
+  gap: 4px;
 }
 
 .tag {
   font-family: var(--font-mono);
-  font-size: 0.56rem;
+  font-weight: 300;
+  font-size: 0.52rem;
   letter-spacing: 0.06em;
   color: var(--muted);
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 3px 8px;
+  padding: 1px 6px;
+}
+
+.project-year {
+  flex: 0 0 auto;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 3px 9px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  line-height: 1.45;
 }
 
 .project-name {
+  flex: 0 1 auto;
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.25rem;
+  font-weight: 500;
+  font-size: 1.1rem;
   letter-spacing: -0.01em;
   line-height: 1.15;
 }
 
 .project-desc {
-  font-size: 0.85rem;
-  color: color-mix(in srgb, var(--paper) 80%, var(--muted));
+  width: 100%;
+  max-width: none;
+  font-size: 0.8rem;
+  font-weight: 300;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--paper) 72%, var(--muted));
   flex-grow: 1;
 }
 
 .project-btns {
   display: flex;
-  gap: 8px;
+  gap: 5px;
   flex-wrap: wrap;
 }
 
@@ -1518,38 +1556,44 @@ body {
   content: '';
   position: absolute;
   z-index: -1;
-  top: calc(clamp(64px, 11vh, 120px) - 10px);
-  right: -6vw;
-  bottom: -12px;
-  left: -6vw;
-  background: linear-gradient(
-    105deg,
-    transparent 4%,
-    rgba(var(--section-focus-rgb), 0.085) 30%,
-    rgba(var(--section-focus-rgb), 0.06) 68%,
-    transparent 96%
+  top: calc(clamp(64px, 11vh, 120px) - 44px);
+  right: -10vw;
+  bottom: -52px;
+  left: -10vw;
+  background: radial-gradient(
+    ellipse 48% 44% at 50% 48%,
+    rgba(var(--section-focus-rgb), 0.09) 0%,
+    rgba(var(--section-focus-rgb), 0.06) 44%,
+    rgba(var(--section-focus-rgb), 0.025) 70%,
+    transparent 100%
   );
-  filter: blur(22px);
   opacity: 0;
-  transform: scale(0.9);
   pointer-events: none;
-  transition:
-    opacity 0.75s ease,
-    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.75s ease;
 }
 
 .site-content > .section:first-child::before {
-  top: calc(clamp(24px, 4vh, 44px) - 10px);
+  top: calc(clamp(24px, 4vh, 44px) - 44px);
+}
+
+.project .btn {
+  gap: 6px;
+  padding: 5px 11px;
+  font-weight: 300;
+  font-size: 0.61rem;
+}
+
+.project .btn svg {
+  width: 12px;
+  height: 12px;
 }
 
 .site-content.content-expanded .section.is-focused::before {
   opacity: 1;
-  transform: scale(1);
 }
 
 .section.is-focused .section-head {
   border-color: rgba(var(--section-focus-rgb), 0.4);
-  margin-bottom: 34px;
 }
 
 .site-content.section-lines-ready .section.is-focused .section-head::after {
@@ -1558,7 +1602,6 @@ body {
 
 .section.is-focused .section-title {
   color: var(--section-focus);
-  letter-spacing: -0.045em;
   text-shadow: 0 0 28px rgba(var(--section-focus-rgb), 0.25);
   transform: translateX(7px) scale(1.16);
 }
@@ -1575,7 +1618,6 @@ body {
   transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
     color 0.65s ease,
     text-shadow 0.65s ease;
 }
@@ -1650,9 +1692,7 @@ body {
   transform-origin: center bottom;
   transition:
     border-color 0.4s ease,
-    box-shadow 0.4s ease,
-    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.6s ease;
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 #experience .experience-timeline .t-title {
@@ -1664,13 +1704,10 @@ body {
 }
 
 #experience .experience-timeline .t-line-fill {
-  transition:
-    box-shadow 0.65s ease,
-    filter 0.65s ease;
+  transition: box-shadow 0.65s ease;
 }
 
 #experience.is-focused .experience-timeline .t-card {
-  filter: brightness(1.08);
   transform: scale(1.015);
 }
 
@@ -1692,7 +1729,6 @@ body {
 }
 
 #experience.is-focused .experience-timeline .t-line-fill {
-  filter: brightness(1.35) saturate(1.2);
   box-shadow:
     0 0 12px rgba(139, 124, 255, 0.8),
     0 0 28px rgba(90, 200, 255, 0.42);
@@ -1794,9 +1830,7 @@ body {
   transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-    border-color 0.65s ease,
-    box-shadow 0.7s ease;
+    border-color 0.65s ease;
 }
 
 #skills .skill-category-name {
@@ -1814,12 +1848,7 @@ body {
     border-color 0.45s ease,
     background 0.45s ease,
     color 0.45s ease,
-    box-shadow 0.45s ease,
     transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-#skills .chips {
-  transition: gap 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 #skills.is-focused .skill-category[data-revealed] {
@@ -1837,12 +1866,7 @@ body {
   color: #f2eaff;
   border-color: rgba(192, 140, 255, 0.46);
   background: rgba(139, 124, 255, 0.12);
-  box-shadow: 0 7px 18px rgba(139, 124, 255, 0.1);
   transform: translateY(-3px) scale(1.035);
-}
-
-#skills.is-focused .chips {
-  gap: 11px;
 }
 
 #skills.is-focused .chip:nth-child(3n + 2) {
@@ -1867,9 +1891,7 @@ body {
   transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
     transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-    border-color 0.55s ease,
-    box-shadow 0.65s ease;
+    border-color 0.55s ease;
 }
 
 #projects .project-name {
@@ -2059,91 +2081,36 @@ body {
     display: block;
   }
 
-  .skill-category-ai .chips {
+.skill-category-ai .chips {
     margin-top: 18px;
     justify-content: flex-start;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+/* Keep viewport focus lightweight: motion belongs to the one-time reveal,
+   while focused sections retain their color, border and ambient-light cues. */
+#about.is-focused .about-text[data-revealed],
+#about.is-focused .btn-row[data-revealed],
+#education.is-focused .education-card[data-revealed],
+#education.is-focused .education-card[data-revealed]:first-child,
+#education.is-focused .education-card[data-revealed]:last-child,
+#education.is-focused .education-card-icon,
+#education.is-focused .education-card .t-title,
+#experience.is-focused .experience-timeline .t-card,
+#experience.is-focused .experience-timeline .t-item.current .t-card,
+#experience.is-focused .experience-timeline .t-title,
+#work.is-focused .work-system-name,
+#work.is-focused .work-system-index::before,
+#work.is-focused .work-footnote-mark,
+#skills.is-focused .skill-category-name,
+#skills.is-focused .chip,
+#projects.is-focused .project[data-revealed],
+#projects.is-focused .project[data-revealed]:nth-child(odd),
+#projects.is-focused .project[data-revealed]:nth-child(even),
+#projects.is-focused .project-name {
+  transform: none;
+}
 
-  .hero-letter {
-    animation-duration: 0.01ms;
-    animation-delay: 0ms !important;
-  }
-
-  .hero {
-    transition: none;
-  }
-
-  .hero-title {
-    transition: none;
-  }
-
-  [data-reveal] {
-    transition: none;
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
-
-  .t-line-fill {
-    transition: none;
-  }
-
-  .section::before,
-  .section-head,
-  .section-head::after,
-  .section-title,
-  .section-num,
-  #about .about-text,
-  #about .btn-row,
-  #education .education-card,
-  #education .education-card-icon,
-  #education .education-card .t-title,
-  #experience .experience-timeline .t-card,
-  #experience .experience-timeline .t-title,
-  #experience .experience-timeline .t-line-fill,
-  #work .work-intro,
-  #work .work-system,
-  #work .work-system::before,
-  #work .work-system::after,
-  #work .work-system-index::before,
-  #work .work-system-name,
-  #work .work-area-examples,
-  #work .work-footnotes,
-  #work .work-footnote,
-  #work .work-footnote-mark,
-  #work .work-footnote-name,
-  #skills .skill-category,
-  #skills .skill-category-name,
-  #skills .chip,
-  #projects .project,
-  #projects .project-name {
-    transition: none !important;
-  }
-
-  .section.is-focused .section-title,
-  .section.is-focused .section-num,
-  #about.is-focused .about-text[data-revealed],
-  #about.is-focused .btn-row[data-revealed],
-  #education.is-focused .education-card[data-revealed],
-  #education.is-focused .education-card-icon,
-  #education.is-focused .education-card .t-title,
-  #experience.is-focused .experience-timeline .t-card,
-  #experience.is-focused .experience-timeline .t-item.current .t-card,
-  #experience.is-focused .experience-timeline .t-title,
-  #work.is-focused .work-system-name,
-  #work.is-focused .work-system-index::before,
-  #work.is-focused .work-footnote-mark,
-  #skills.is-focused .skill-category[data-revealed],
-  #skills.is-focused .chip,
-  #projects.is-focused .project[data-revealed],
-  #projects.is-focused .project-name {
-    transform: none !important;
-  }
-
+#projects.is-focused .project[data-revealed]:hover {
+  transform: translateY(-3px);
 }

@@ -2,10 +2,12 @@ interface RailProps {
   sections: { id: string; label: string }[]
   active: string
   visible: boolean
+  onNavigate: (id: string) => void
 }
 
-export default function Rail({ sections, active, visible }: RailProps) {
+export default function Rail({ sections, active, visible, onNavigate }: RailProps) {
   const scrollTo = (id: string) => {
+    onNavigate(id)
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
@@ -18,7 +20,7 @@ export default function Rail({ sections, active, visible }: RailProps) {
           onClick={() => scrollTo(s.id)}
         >
           <span className="rail-num">{String(i + 1).padStart(2, '0')}</span>
-          <span className="rail-tick" />
+          <span className="rail-tick" aria-hidden="true" />
           <span className="rail-label">{s.label}</span>
         </button>
       ))}

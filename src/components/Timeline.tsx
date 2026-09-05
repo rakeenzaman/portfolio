@@ -153,42 +153,58 @@ function TimelineTrack({
 
   // Position the line/fill and lit states off the real dot positions.
   // Desktop (horizontal): filled all the way on init — no scroll animation.
-  // Mobile (vertical): the fill grows with scroll via a rAF loop while on screen.
+  // Mobile (vertical): the fill updates once per scroll frame while on screen.
   useEffect(() => {
     const track = trackRef.current
     const line = lineRef.current
     const fill = fillRef.current
     if (!track || !line || !fill) return
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let raf = 0
-    let running = false
+    let visible = false
+    let needsMeasure = true
+    let items: HTMLElement[] = []
+    let centers: number[] = []
+    let first = 0
+    let last = 0
+    let lastLitCount = -1
+    let disposed = false
 
-    const update = () => {
-      const items = Array.from(track.querySelectorAll<HTMLElement>('.t-item'))
+    const updateProgress = () => {
+      if (!mobile || !centers.length) return
+      const trackRect = track.getBoundingClientRect()
+      const focus = window.innerHeight * 0.66 - trackRect.top
+      const length = Math.max(1, last - first)
+      const filled = Math.min(length, Math.max(0, focus - first))
+      const progress = filled / length
+      const litCount = centers.filter((center) => filled + first >= center).length
+
+      fill.style.transform = `scaleY(${progress})`
+      if (litCount !== lastLitCount) {
+        items.forEach((item, index) => item.toggleAttribute('data-lit', index < litCount))
+        lastLitCount = litCount
+      }
+    }
+
+    const measure = () => {
+      items = Array.from(track.querySelectorAll<HTMLElement>('.t-item'))
       const dots = items.map((item) => item.querySelector<HTMLElement>('.t-dot'))
       if (!items.length || dots.some((d) => !d)) return
       const trackRect = track.getBoundingClientRect()
-      const vh = window.innerHeight
       const rects = dots.map((dot) => dot!.getBoundingClientRect())
 
       if (mobile) {
-        // vertical: fill top -> bottom, focus point ~2/3 down the viewport
-        const centers = rects.map((r) => r.top + r.height / 2 - trackRect.top)
-        const first = centers[0]
-        const last = centers[centers.length - 1]
-        const focus = reduced ? Infinity : vh * 0.66 - trackRect.top
-        const filled = Math.min(last - first, Math.max(0, focus - first))
+        centers = rects.map((r) => r.top + r.height / 2 - trackRect.top)
+        first = centers[0]
+        last = centers[centers.length - 1]
         line.style.left = line.style.width = ''
         fill.style.left = fill.style.width = ''
         line.style.top = `${first}px`
         line.style.height = `${last - first}px`
         fill.style.top = `${first}px`
-        fill.style.height = `${filled}px`
-        items.forEach((item, i) => {
-          item.style.removeProperty('--connector-height')
-          item.toggleAttribute('data-lit', filled + first >= centers[i])
-        })
+        fill.style.height = `${last - first}px`
+        items.forEach((item) => item.style.removeProperty('--connector-height'))
+        updateProgress()
       } else {
         // horizontal: line is fully filled and every node lit from the start
         const centers = rects.map((r) => r.left + r.width / 2 - trackRect.left)
@@ -200,49 +216,63 @@ function TimelineTrack({
         line.style.width = `${last - first}px`
         fill.style.left = `${first}px`
         fill.style.width = `${last - first}px`
+        fill.style.transform = ''
         items.forEach((item) => {
           item.toggleAttribute('data-lit', true)
         })
       }
     }
 
-    const loop = () => {
-      update()
-      if (running) raf = requestAnimationFrame(loop)
+    const flush = () => {
+      raf = 0
+      if (needsMeasure) {
+        needsMeasure = false
+        measure()
+      } else {
+        updateProgress()
+      }
     }
+
+    const schedule = (measureFirst = false) => {
+      needsMeasure ||= measureFirst
+      if (!raf) raf = requestAnimationFrame(flush)
+    }
+
+    const onScroll = () => {
+      if (mobile && visible) schedule()
+    }
+
+    const onResize = () => schedule(true)
 
     // Only the mobile fill animates with scroll; desktop just measures once
     // (plus on resize / font load) so the full line lands in the right place.
     const io = new IntersectionObserver(
       ([e]) => {
-        if (!mobile || reduced) return
-        if (e.isIntersecting && !running) {
-          running = true
-          raf = requestAnimationFrame(loop)
-        } else if (!e.isIntersecting && running) {
-          running = false
-          cancelAnimationFrame(raf)
-        }
+        visible = e.isIntersecting
+        if (mobile && visible) schedule()
       },
       { rootMargin: '120px 0px' },
     )
     io.observe(track)
-    update()
-    raf = requestAnimationFrame(update)
-    document.fonts?.ready.then(update)
-    window.addEventListener('resize', update)
+    schedule(true)
+    document.fonts?.ready.then(() => {
+      if (!disposed) schedule(true)
+    })
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onResize)
 
     // Re-measure whenever the track's own box changes — covers scrollbar
     // toggling, subtitle wrapping/reflow, and font swaps. On desktop there's no
     // animation loop, so without this the line length goes stale after mount.
-    const ro = new ResizeObserver(update)
+    const ro = new ResizeObserver(() => schedule(true))
     ro.observe(track)
 
     return () => {
-      running = false
+      disposed = true
       io.disconnect()
       ro.disconnect()
-      window.removeEventListener('resize', update)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
       cancelAnimationFrame(raf)
     }
   }, [mobile])

@@ -1,17 +1,27 @@
-import { useRef } from 'react'
-import { projects, githubUrl } from '../data'
+import { useEffect, useRef } from 'react'
+import { projects } from '../data'
 import type { Project } from '../data'
-import { ExternalIcon, GithubIcon } from './Icons'
+import { GithubIcon } from './Icons'
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const ref = useRef<HTMLElement>(null)
+  const frame = useRef(0)
+  const pointer = useRef({ x: 0, y: 0 })
+
+  useEffect(() => () => cancelAnimationFrame(frame.current), [])
 
   const onMouseMove = (e: React.MouseEvent) => {
     const el = ref.current
     if (!el) return
-    const rect = el.getBoundingClientRect()
-    el.style.setProperty('--mx', `${e.clientX - rect.left}px`)
-    el.style.setProperty('--my', `${e.clientY - rect.top}px`)
+    pointer.current = { x: e.clientX, y: e.clientY }
+    if (frame.current) return
+
+    frame.current = requestAnimationFrame(() => {
+      frame.current = 0
+      const rect = el.getBoundingClientRect()
+      el.style.setProperty('--mx', `${pointer.current.x - rect.left}px`)
+      el.style.setProperty('--my', `${pointer.current.y - rect.top}px`)
+    })
   }
 
   return (
@@ -22,23 +32,29 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       data-delay={String(100 + (index % 2) * 120)}
       onMouseMove={onMouseMove}
     >
-      <div className="tags">
-        {project.languages.split(',').map((lang) => (
-          <span className="tag" key={lang.trim()}>
-            {lang.trim()}
-          </span>
-        ))}
+      <div className="project-header">
+        <div className="project-title-group">
+          <h3 className="project-name">{project.name}</h3>
+          <div className="tags">
+            {project.languages.split(',').map((lang) => (
+              <span className="tag" key={lang.trim()}>
+                {lang.trim()}
+              </span>
+            ))}
+          </div>
+        </div>
+        <time className="project-year" dateTime={String(project.year)}>
+          {project.year}
+        </time>
       </div>
-      <h3 className="project-name">{project.name}</h3>
       <p className="project-desc">{project.description}</p>
       <div className="project-btns">
-        {project.liveDemoUrl && (
-          <button className="btn small">
-            <ExternalIcon />
-            Live Demo
-          </button>
-        )}
-        <a className="btn small" href={githubUrl} target="_blank" rel="noreferrer">
+        <a
+          className="btn small"
+          href={project.repositoryUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
           <GithubIcon />
           GitHub
         </a>
