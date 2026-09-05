@@ -21,8 +21,7 @@ Outputs a production build to `dist/`.
 
 ## Deploy
 
-```bash
-npm run deploy
-```
+Pushes to `main` are built and deployed by the GitHub Pages workflow in
+`.github/workflows/deploy.yml`.
 
-Builds and publishes `dist/` to the `gh-pages` branch for GitHub Pages.
+In the repository's **Settings → Pages**, set **Source** to **GitHub Actions**.
